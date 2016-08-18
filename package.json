@@ -1,0 +1,16 @@
+{
+  "name": "set-card-game-web",
+  "version": "0.0.0",
+  "description": "Set card game to be run in browsers.",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Isti115/set-card-game-web.git"
+  },
+  "author": "Isti115",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Isti115/set-card-game-web/issues"
+  },
+  "homepage": "https://github.com/Isti115/set-card-game-web#readme"
+}
