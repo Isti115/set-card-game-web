@@ -1,8 +1,11 @@
 {
   "name": "set-card-game-web",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Set card game to be run in browsers.",
-  "scripts": {},
+  "scripts": {
+    "start": "rollup --input ./src/index.js --output ./www/scripts.js --watch",
+    "test": "eslint ./src"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Isti115/set-card-game-web.git"
@@ -12,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/Isti115/set-card-game-web/issues"
   },
-  "homepage": "https://github.com/Isti115/set-card-game-web#readme"
+  "homepage": "https://github.com/Isti115/set-card-game-web#readme",
+  "dependencies": {
+    "eslint": "^3.3.1",
+    "eslint-config-standard": "^5.3.5",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-standard": "^2.0.0",
+    "rollup": "^0.34.10",
+    "rollup-watch": "^2.5.0"
+  }
 }
