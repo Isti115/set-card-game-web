@@ -1,3 +1,10 @@
-import test from './test'
+import Game from './game'
 
-test()
+window.addEventListener('load', init, false)
+
+function init () {
+  const container = document.body
+
+  const game = new Game(container)
+  game.start()
+}
