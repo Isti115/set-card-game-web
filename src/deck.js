@@ -14,7 +14,17 @@ export default class Deck {
     return this.cards.length > 0
   }
 
-  pop () {
+  takeCard () {
     return this.cards.pop()
+  }
+
+  takeCards (n) {
+    const cards = []
+
+    for (let i = 0; i < n; i++) {
+      cards.push(this.cards.pop())
+    }
+
+    return cards
   }
 }

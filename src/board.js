@@ -1,6 +1,15 @@
 export default class Board {
-  constructor (width, height) {
-    this.width = width
-    this.height = height
+  constructor () {
+    this.cards = []
+  }
+
+  putCard (card) {
+    this.cards.push(card)
+  }
+
+  putCards (cards) {
+    for (const card of cards) {
+      this.putCard(card)
+    }
   }
 }

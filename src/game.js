@@ -2,16 +2,17 @@ import Deck from './deck'
 import Board from './board'
 
 export default class Game {
-  constructor (container) {
-    this.container = container
-
+  constructor () {
     this.deck = new Deck()
     this.board = new Board()
   }
 
   start () {
-    this.container.innerHTML = 'started'
     this.deck.shuffle()
-    console.log(this.deck.pop())
+    this.deal(12)
+  }
+
+  deal (n) {
+    this.board.putCards(this.deck.takeCards(n))
   }
 }
