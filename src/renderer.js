@@ -1,16 +1,22 @@
 import { CardProperty } from './card'
 
-const imageSourceFromCardShape = cardProperty => ({
+const imageSourceFromCardShape = cardShape => ({
   [CardProperty.SHAPE.OVAL]: './images/oval.png',
   [CardProperty.SHAPE.SQUIGGLE]: './images/squiggle.png',
   [CardProperty.SHAPE.DIAMOND]: './images/diamond.png'
-}[cardProperty])
+}[cardShape])
 
-const symbolCountFromCardNumber = cardProperty => ({
+const symbolCountFromCardNumber = cardNumber => ({
   [CardProperty.NUMBER.ONE]: 1,
   [CardProperty.NUMBER.TWO]: 2,
   [CardProperty.NUMBER.THREE]: 3
-}[cardProperty])
+}[cardNumber])
+
+const backgroundFromCardShading = (cardShading, color) => ({
+  [CardProperty.SHADING.SOLID]: `${color}`,
+  [CardProperty.SHADING.STRIPED]: `repeating-linear-gradient(45deg, ${color}, white 10px)`,
+  [CardProperty.SHADING.OUTLINE]: `repeating-linear-gradient(-45deg, ${color}, white 10px)`
+}[cardShading])
 
 const elementIdFromCard = card => `card_${card.color}_${card.shape}_${card.number}_${card.shading}`
 
@@ -61,7 +67,7 @@ export default class Renderer {
             `rotateY(180deg)` +
             `translateZ(-250px)`
         },
-        delay: 2000
+        delay: 1000
       })
 
       this.queue.push({
@@ -71,7 +77,7 @@ export default class Renderer {
             `translateY(${0 + (i % 3) * 175}px)` +
             `rotateY(180deg)`
         },
-        delay: 2000
+        delay: 500
       })
       currentElement.style.zIndex = ++this.maxZIndex
     }
@@ -109,7 +115,7 @@ export default class Renderer {
     const symbol = document.createElement('div')
     symbol.classList.add('symbol')
 
-    symbol.style.backgroundColor = card.color
+    symbol.style.background = backgroundFromCardShading(card.shading, card.color)
 
     const symbolImage = document.createElement('img')
     symbolImage.classList.add('symbolImage')
