@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Set card game to be run in browsers.",
   "scripts": {
+    "bundle": "rollup --config --sourcemap inline",
     "start": "rollup --config --sourcemap inline --watch",
     "start:nomap": "rollup --config --watch",
     "start:old": "rollup --input ./src/index.js --output ./www/scripts.js --watch",

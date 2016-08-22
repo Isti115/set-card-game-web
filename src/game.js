@@ -5,14 +5,18 @@ export default class Game {
   constructor () {
     this.deck = new Deck()
     this.board = new Board()
+
+    this.changedCards = []
   }
 
   start () {
     this.deck.shuffle()
-    this.deal(12)
+  // this.deal(12)
   }
 
   deal (n) {
-    this.board.putCards(this.deck.takeCards(n))
+    const cards = this.deck.takeCards(n)
+    this.changedCards = cards
+    this.board.putCards(cards)
   }
 }

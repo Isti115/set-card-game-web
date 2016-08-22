@@ -4,7 +4,9 @@ export default class Board {
   }
 
   putCard (card) {
-    this.cards.push(card)
+    let i = 0
+    while (this.cards[i] !== undefined) {i++}
+    this.cards[i] = card
   }
 
   putCards (cards) {

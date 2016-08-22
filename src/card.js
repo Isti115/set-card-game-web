@@ -36,7 +36,12 @@ export default class Card {
       for (const shape in CardProperty.SHAPE) {
         for (const number in CardProperty.NUMBER) {
           for (const shading in CardProperty.SHADING) {
-            cards.push(new Card(color, shape, number, shading))
+            cards.push(new Card(
+              CardProperty.COLOR[color],
+              CardProperty.SHAPE[shape],
+              CardProperty.NUMBER[number],
+              CardProperty.SHADING[shading]
+            ))
           }
         }
       }
