@@ -131,7 +131,10 @@ export default class Renderer {
     element.appendChild(back)
     element.appendChild(front)
 
-    element.addEventListener('click', (e) => console.log('card clicked'))
+    element.addEventListener('click', (e) => {
+      console.log('card clicked')
+      element.style.boxShadow = 'aqua 3px 3px 10px 6px'
+    })
 
     return element
   }
