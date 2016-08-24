@@ -1,4 +1,4 @@
-export default class Board {
+export default class Stash {
   constructor () {
     this.cards = []
   }
@@ -13,18 +13,5 @@ export default class Board {
     for (const card of cards) {
       this.putCard(card)
     }
-  }
-
-  takeCard (card) {
-    delete this.cards[this.cards.indexOf(card)]
-    return card
-  }
-
-  takeCards (cards) {
-    for (const card of cards) {
-      this.takeCard(card)
-    }
-
-    return cards
   }
 }

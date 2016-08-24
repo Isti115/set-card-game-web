@@ -33,6 +33,8 @@ export default class Renderer {
 
     this.queue = []
     this.autoProcessQueue = true
+
+    this.selectedCards = []
   }
 
   setContainer (container) {
@@ -44,6 +46,8 @@ export default class Renderer {
   }
 
   init () {
+    this.elements['deck'] = this.renderDeck()
+
     for (const card of this.game.deck.cards) {
       this.elements[elementIdFromCard(card)] = this.renderCard(card)
     }
@@ -102,6 +106,14 @@ export default class Renderer {
     }
   }
 
+  renderDeck () {
+    const element = document.createElement('div')
+
+    element.id = 'deck'
+
+    return element
+  }
+
   renderCard (card) {
     const element = document.createElement('div')
     element.classList.add('card')
@@ -132,22 +144,45 @@ export default class Renderer {
     element.appendChild(front)
 
     element.addEventListener('click', (e) => {
-      console.log('card clicked')
-      element.style.boxShadow = 'aqua 3px 3px 10px 6px'
+      this.cardClicked(card)
     })
 
     return element
   }
 
-  getFreeBoardIndices () {
-    const freeIndices = []
+  cardClicked (card) {
+    console.log(card)
 
-    for (let i = 0; i < this.boardWidth * this.boardHeight; i++) {
-      if (board.cards[i] === undefined) {
-        freeIndices.push(i)
-      }
+    const currentElement = this.elements[elementIdFromCard(card)]
+
+    currentElement.style.transition = 'all 0.25s'
+    currentElement.style.boxShadow = 'aqua 3px 3px 10px 6px'
+
+    this.selectedCards.push(card)
+
+    if (this.selectedCards.length === 3) {
+      this.game.trySet(this.selectedCards)
+      this.clearSelection()
+    }
+  }
+
+  clearSelection () {
+    for (const card of this.selectedCards) {
+      this.elements[elementIdFromCard(card)].style.boxShadow = ''
     }
 
-    return freeIndices
+    this.selectedCards = []
   }
+
+// getFreeBoardIndices () {
+//   const freeIndices = []
+//
+//   for (let i = 0; i < this.boardWidth * this.boardHeight; i++) {
+//     if (board.cards[i] === undefined) {
+//       freeIndices.push(i)
+//     }
+//   }
+//
+//   return freeIndices
+// }
 }

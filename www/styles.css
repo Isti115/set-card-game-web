@@ -8,6 +8,19 @@ html, body {
   perspective: 1000px;
 }
 
+#deck {
+  position: absolute;
+
+  width: 110px;
+  height: 160px;
+
+  border-style: dotted;
+  border-color: black;
+  border-width: 3px;
+
+  transform: translateX(10px) translateY(10px);
+}
+
 .card {
   position: absolute;
 
@@ -19,7 +32,7 @@ html, body {
 
   /*transform: rotateY(180deg);*/
 
-  /*transform: translateX(15px) translateY(15px);*/
+  transform: translateX(15px) translateY(15px);
 
   transition: all 1s;
 }
