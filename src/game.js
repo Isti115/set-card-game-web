@@ -25,8 +25,8 @@ export default class Game {
 
   trySet (cards) {
     if (Set.isSet(cards)) {
-      console.log('sajt')
       this.stash.putCards(this.board.takeCards(cards))
+      this.changedCards.push(...cards)
     } else {
       console.log('not set')
     }

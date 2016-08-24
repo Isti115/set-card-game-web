@@ -60,31 +60,50 @@ export default class Renderer {
   render () {
     for (const card of this.game.changedCards) {
       const currentElement = this.elements[elementIdFromCard(card)]
+      if (this.game.board.cards.includes(card)) {
+        const i = this.game.board.cards.indexOf(card)
 
-      const i = this.game.board.cards.indexOf(card)
+        this.queue.push({
+          payload: [{
+            element: currentElement,
+            properties: {
+              transform: `translateX(${document.body.clientWidth / 2}px)` +
+                `translateY(${document.body.clientHeight / 2}px)` +
+                `rotateY(180deg)` +
+                `translateZ(-250px)`
+            }
+          }],
+          delay: 1000
+        })
 
-      this.queue.push({
-        element: currentElement,
-        properties: {
-          transform: `translateX(${document.body.clientWidth / 2}px)` +
-            `translateY(${document.body.clientHeight / 2}px)` +
-            `rotateY(180deg)` +
-            `translateZ(-250px)`
-        },
-        delay: 1000
-      })
-
-      this.queue.push({
-        element: currentElement,
-        properties: {
-          transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
-            `translateY(${0 + (i % 3) * 175}px)` +
-            `rotateY(180deg)`
-        },
-        delay: 500
-      })
-      currentElement.style.zIndex = ++this.maxZIndex
+        this.queue.push({
+          payload: [{
+            element: currentElement,
+            properties: {
+              transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
+                `translateY(${0 + (i % 3) * 175}px)` +
+                `rotateY(180deg)`
+            }
+          }],
+          delay: 500
+        })
+        currentElement.style.zIndex = ++this.maxZIndex
+      } else if (this.game.stash.cards.includes(card)) {
+        this.queue.push({
+          payload: [{
+            element: currentElement,
+            properties: {
+              transform: `translateX(${100}px)` +
+                `translateY(${500}px)`,
+              transition: 'all 0.25s'
+            }
+          }],
+          delay: 0
+        })
+      }
     }
+
+    this.game.changedCards = []
 
     this.processQueue()
   }
@@ -97,8 +116,10 @@ export default class Renderer {
 
     const currentQueueItem = this.queue.shift()
 
-    for (const property in currentQueueItem.properties) {
-      currentQueueItem.element.style[property] = currentQueueItem.properties[property]
+    for (const modification of currentQueueItem.payload) {
+      for (const property in modification.properties) {
+        modification.element.style[property] = modification.properties[property]
+      }
     }
 
     if (this.autoProcessQueue) {
@@ -163,6 +184,7 @@ export default class Renderer {
     if (this.selectedCards.length === 3) {
       this.game.trySet(this.selectedCards)
       this.clearSelection()
+      this.render()
     }
   }
 

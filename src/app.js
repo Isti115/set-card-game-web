@@ -13,6 +13,7 @@ export default class App {
     this.renderer.render()
 
     window.addEventListener('keydown', this.keyDown.bind(this), false)
+    this.renderer.elements['deck'].addEventListener('click', this.deal.bind(this), true)
   }
 
   keyDown (e) {
