@@ -6,16 +6,16 @@ export default class App {
     this.container = container
 
     this.game = new Game()
-    this.game.start()
 
     this.renderer = new Renderer(this.container, this.game)
     this.renderer.init()
-    this.renderer.render()
-
+    
     window.addEventListener('keydown', this.keyDown.bind(this), false)
     this.renderer.elements['deck'].addEventListener('click', this.deal.bind(this), true)
 
-    this.deal()
+    // this.deal()
+    this.game.start()
+    this.renderer.render()
   }
 
   keyDown (e) {

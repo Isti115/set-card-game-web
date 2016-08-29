@@ -73,7 +73,7 @@ export default class Renderer {
                 `translateZ(-250px)`
             }
           }],
-          delay: 1000
+          delay: 300
         })
 
         this.queue.push({
@@ -81,11 +81,11 @@ export default class Renderer {
             element: currentElement,
             properties: {
               transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
-                `translateY(${0 + (i % 3) * 175}px)` +
+                `translateY(${15 + (i % 3) * 175}px)` +
                 `rotateY(180deg)`
             }
           }],
-          delay: 500
+          delay: 150
         })
         currentElement.style.zIndex = ++this.maxZIndex
       } else if (this.game.stash.cards.includes(card)) {
@@ -154,7 +154,6 @@ export default class Renderer {
     symbolOutline.classList.add('symbolOutline')
 
     symbolOutline.style.webkitMaskImage = `url('${symbolImagePath}')`
-    console.log(symbolOutline.style.webkitMaskImage)
     symbolOutline.style.backgroundColor = card.color
 
     const symbol = document.createElement('div')
@@ -183,23 +182,26 @@ export default class Renderer {
 
   cardClicked (card) {
     console.log(card)
-    const currentElement = this.elements[elementIdFromCard(card)]
 
-    if (this.selectedCards.includes(card)) {
-      currentElement.style.transition = 'all 0.25s'
-      currentElement.style.boxShadow = 'none'
+    if (this.game.board.cards.includes(card)) {
+      const currentElement = this.elements[elementIdFromCard(card)]
 
-      this.selectedCards.splice(this.selectedCards.indexOf(card))
-    } else {
-      currentElement.style.transition = 'all 0.25s'
-      currentElement.style.boxShadow = 'aqua 3px 3px 10px 6px'
+      if (this.selectedCards.includes(card)) {
+        currentElement.style.transition = 'all 0.25s'
+        currentElement.style.boxShadow = 'none'
 
-      this.selectedCards.push(card)
+        this.selectedCards.splice(this.selectedCards.indexOf(card))
+      } else {
+        currentElement.style.transition = 'all 0.25s'
+        currentElement.style.boxShadow = 'aqua 3px 3px 10px 6px'
 
-      if (this.selectedCards.length === 3) {
-        this.game.trySet(this.selectedCards)
-        this.clearSelection()
-        this.render()
+        this.selectedCards.push(card)
+
+        if (this.selectedCards.length === 3) {
+          this.game.trySet(this.selectedCards)
+          this.clearSelection()
+          this.render()
+        }
       }
     }
   }

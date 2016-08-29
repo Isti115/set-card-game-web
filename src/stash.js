@@ -4,9 +4,7 @@ export default class Stash {
   }
 
   putCard (card) {
-    let i = 0
-    while (this.cards[i] !== undefined) {i++}
-    this.cards[i] = card
+    this.cards.push(card)
   }
 
   putCards (cards) {

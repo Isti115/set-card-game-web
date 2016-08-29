@@ -14,12 +14,12 @@ export default class Game {
 
   start () {
     this.deck.shuffle()
-  // this.deal(12)
+    this.deal(12)
   }
 
   deal (n) {
     const cards = this.deck.takeTopCards(n)
-    this.changedCards = cards
+    this.changedCards.push(...cards)
     this.board.putCards(cards)
   }
 
@@ -27,6 +27,9 @@ export default class Game {
     if (Set.isSet(cards)) {
       this.stash.putCards(this.board.takeCards(cards))
       this.changedCards.push(...cards)
+      if (this.board.cardCount < 12) {
+        this.deal(3)
+      }
     } else {
       console.log('not set')
     }

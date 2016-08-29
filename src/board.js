@@ -27,4 +27,8 @@ export default class Board {
 
     return cards
   }
+
+  get cardCount () {
+    return this.cards.filter(c => c !== undefined).length
+  }
 }
