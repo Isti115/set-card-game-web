@@ -1,34 +1,32 @@
 export default class Set {
-  static isSet (cards) {
+  static isAllEqual (values) {
     return (
-      (cards[0].color === cards[1].color &&
-      cards[1].color === cards[2].color &&
-      cards[2].color === cards[0].color) ||
-      (cards[0].color !== cards[1].color &&
-      cards[1].color !== cards[2].color &&
-      cards[2].color !== cards[0].color) &&
-
-      (cards[0].shape === cards[1].shape &&
-      cards[1].shape === cards[2].shape &&
-      cards[2].shape === cards[0].shape) ||
-      (cards[0].shape !== cards[1].shape &&
-      cards[1].shape !== cards[2].shape &&
-      cards[2].shape !== cards[0].shape) &&
-
-      (cards[0].number === cards[1].number &&
-      cards[1].number === cards[2].number &&
-      cards[2].number === cards[0].number) ||
-      (cards[0].number !== cards[1].number &&
-      cards[1].number !== cards[2].number &&
-      cards[2].number !== cards[0].number) &&
-
-      (cards[0].shading === cards[1].shading &&
-      cards[1].shading === cards[2].shading &&
-      cards[2].shading === cards[0].shading) ||
-      (cards[0].shading !== cards[1].shading &&
-      cards[1].shading !== cards[2].shading &&
-      cards[2].shading !== cards[0].shading)
+      values[0] === values[1] &&
+      values[1] === values[2] &&
+      values[2] === values[0]
     )
+  }
+
+  static isAllDifferent (values) {
+    return (
+      values[0] !== values[1] &&
+      values[1] !== values[2] &&
+      values[2] !== values[0]
+    )
+  }
+
+  static isAllEqualOrDifferent (values) {
+    return Set.isAllEqual(values) || Set.isAllDifferent(values)
+  }
+
+  static isSet (cards) {
+    for (const property in cards[0]) {
+      if (!Set.isAllEqualOrDifferent(cards.map(c => c[property]))) {
+        return false
+      }
+    }
+
+    return true
   }
 
   static hasSet () {
