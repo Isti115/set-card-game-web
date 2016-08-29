@@ -14,8 +14,8 @@ const symbolCountFromCardNumber = cardNumber => ({
 
 const backgroundFromCardShading = (cardShading, color) => ({
   [CardProperty.SHADING.SOLID]: `${color}`,
-  [CardProperty.SHADING.STRIPED]: `repeating-linear-gradient(45deg, ${color}, white 10px)`,
-  [CardProperty.SHADING.OUTLINE]: `repeating-linear-gradient(-45deg, ${color}, white 10px)`
+  [CardProperty.SHADING.STRIPED]: `repeating-linear-gradient(45deg, ${color}, ${color} 3px, white 3px, white 6px)`,
+  [CardProperty.SHADING.OUTLINE]: `white`
 }[cardShading])
 
 const elementIdFromCard = card => `card_${card.color}_${card.shape}_${card.number}_${card.shading}`
@@ -145,20 +145,30 @@ export default class Renderer {
     const front = document.createElement('div')
     front.classList.add('front')
 
+    const symbolContainer = document.createElement('div')
+    symbolContainer.classList.add('symbolContainer')
+
+    const symbolImagePath = imageSourceFromCardShape(card.shape)
+
+    const symbolOutline = document.createElement('div')
+    symbolOutline.classList.add('symbolOutline')
+
+    symbolOutline.style.webkitMaskImage = `url('${symbolImagePath}')`
+    console.log(symbolOutline.style.webkitMaskImage)
+    symbolOutline.style.backgroundColor = card.color
+
     const symbol = document.createElement('div')
     symbol.classList.add('symbol')
 
+    symbol.style.webkitMaskImage = `url('${symbolImagePath}')`
+
     symbol.style.background = backgroundFromCardShading(card.shading, card.color)
 
-    const symbolImage = document.createElement('img')
-    symbolImage.classList.add('symbolImage')
-
-    symbolImage.src = imageSourceFromCardShape(card.shape)
-
-    symbol.appendChild(symbolImage)
+    symbolContainer.appendChild(symbolOutline)
+    symbolContainer.appendChild(symbol)
 
     for (let i = 0; i < symbolCountFromCardNumber(card.number); i++) {
-      front.appendChild(symbol.cloneNode(true))
+      front.appendChild(symbolContainer.cloneNode(true))
     }
 
     element.appendChild(back)
@@ -173,18 +183,24 @@ export default class Renderer {
 
   cardClicked (card) {
     console.log(card)
-
     const currentElement = this.elements[elementIdFromCard(card)]
 
-    currentElement.style.transition = 'all 0.25s'
-    currentElement.style.boxShadow = 'aqua 3px 3px 10px 6px'
+    if (this.selectedCards.includes(card)) {
+      currentElement.style.transition = 'all 0.25s'
+      currentElement.style.boxShadow = 'none'
 
-    this.selectedCards.push(card)
+      this.selectedCards.splice(this.selectedCards.indexOf(card))
+    } else {
+      currentElement.style.transition = 'all 0.25s'
+      currentElement.style.boxShadow = 'aqua 3px 3px 10px 6px'
 
-    if (this.selectedCards.length === 3) {
-      this.game.trySet(this.selectedCards)
-      this.clearSelection()
-      this.render()
+      this.selectedCards.push(card)
+
+      if (this.selectedCards.length === 3) {
+        this.game.trySet(this.selectedCards)
+        this.clearSelection()
+        this.render()
+      }
     }
   }
 
