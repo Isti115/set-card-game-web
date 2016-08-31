@@ -1,9 +1,9 @@
 import { CardProperty } from './card'
 
 const imageSourceFromCardShape = cardShape => ({
-  [CardProperty.SHAPE.OVAL]: './images/oval.png',
-  [CardProperty.SHAPE.SQUIGGLE]: './images/squiggle.png',
-  [CardProperty.SHAPE.DIAMOND]: './images/diamond.png'
+  [CardProperty.SHAPE.OVAL]: './images/oval',
+  [CardProperty.SHAPE.SQUIGGLE]: './images/squiggle',
+  [CardProperty.SHAPE.DIAMOND]: './images/diamond'
 }[cardShape])
 
 const symbolCountFromCardNumber = cardNumber => ({
@@ -14,7 +14,7 @@ const symbolCountFromCardNumber = cardNumber => ({
 
 const backgroundFromCardShading = (cardShading, color) => ({
   [CardProperty.SHADING.SOLID]: `${color}`,
-  [CardProperty.SHADING.STRIPED]: `repeating-linear-gradient(45deg, ${color}, ${color} 3px, white 3px, white 6px)`,
+  [CardProperty.SHADING.STRIPED]: `repeating-linear-gradient(90deg, ${color}, ${color} 3px, white 3px, white 6px)`,
   [CardProperty.SHADING.OUTLINE]: `white`
 }[cardShading])
 
@@ -60,35 +60,41 @@ export default class Renderer {
   }
 
   render () {
+    const pickUp = []
+    const putDown = []
+
     for (const card of this.game.changedCards) {
       const currentElement = this.elements[elementIdFromCard(card)]
       if (this.game.board.cards.includes(card)) {
         const i = this.game.board.cards.indexOf(card)
 
-        this.queue.push({
+        pickUp.push({
           payload: [{
             element: currentElement,
             properties: {
-              transform: `translateX(${document.body.clientWidth / 2}px)` +
-                `translateY(${document.body.clientHeight / 2}px)` +
+              transform: `translateX(${165}px)` +
+                `translateY(${190}px)` +
                 `rotateY(180deg)` +
-                `translateZ(-250px)`
+                `translateZ(-250px)`,
+              transition: `all 400ms`
             }
           }],
-          delay: 300
+          delay: 100
         })
 
-        this.queue.push({
+        putDown.push({
           payload: [{
             element: currentElement,
             properties: {
               transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
                 `translateY(${15 + (i % 3) * 175}px)` +
-                `rotateY(180deg)`
+                `rotateY(180deg)`,
+              transition: `all 300ms`
             }
           }],
-          delay: 150
+          delay: 100
         })
+
         currentElement.style.zIndex = ++this.maxZIndex
       } else if (this.game.stash.cards.includes(card)) {
         this.queue.push({
@@ -97,13 +103,14 @@ export default class Renderer {
             properties: {
               transform: `translateX(${15}px)` +
                 `translateY(${365}px)`,
-              transition: 'all 0.25s'
+              transition: 'all 250ms'
             }
           }],
           delay: 0
         })
       }
     }
+    this.queue.push(...pickUp, { payload: [], delay: 500 }, ...putDown)
 
     this.game.changedCards = []
 
@@ -116,6 +123,8 @@ export default class Renderer {
     }
 
     const currentQueueItem = this.queue.shift()
+
+    console.log(currentQueueItem)
 
     for (const modification of currentQueueItem.payload) {
       for (const property in modification.properties) {
@@ -130,9 +139,7 @@ export default class Renderer {
 
   renderDeck () {
     const element = document.createElement('div')
-
     element.id = 'deck'
-
     return element
   }
 
@@ -154,13 +161,13 @@ export default class Renderer {
     const symbolOutline = document.createElement('div')
     symbolOutline.classList.add('symbolOutline')
 
-    symbolOutline.style.webkitMaskImage = `url('${symbolImagePath}')`
+    symbolOutline.style.webkitMaskImage = `url('${symbolImagePath}_outline.png')`
     symbolOutline.style.backgroundColor = card.color
 
     const symbol = document.createElement('div')
     symbol.classList.add('symbol')
 
-    symbol.style.webkitMaskImage = `url('${symbolImagePath}')`
+    symbol.style.webkitMaskImage = `url('${symbolImagePath}.png')`
 
     symbol.style.background = backgroundFromCardShading(card.shading, card.color)
 
@@ -188,12 +195,12 @@ export default class Renderer {
       const currentElement = this.elements[elementIdFromCard(card)]
 
       if (this.selectedCards.includes(card)) {
-        currentElement.style.transition = 'all 0.25s'
+        currentElement.style.transition = 'all 0.15s'
         currentElement.style.boxShadow = 'none'
 
         this.selectedCards.splice(this.selectedCards.indexOf(card))
       } else {
-        currentElement.style.transition = 'all 0.25s'
+        currentElement.style.transition = 'all 0.15s'
         currentElement.style.boxShadow = 'aqua 3px 3px 10px 6px'
 
         this.selectedCards.push(card)

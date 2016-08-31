@@ -6,6 +6,7 @@ html, body {
   height: 100%;
 
   perspective: 1000px;
+  perspective-origin: 210px 265px;
 }
 
 #deck {
@@ -92,5 +93,5 @@ html, body {
 }
 
 .symbol {
-  -webkit-mask-size: 90%;
+  -webkit-mask-size: 100%;
 }
