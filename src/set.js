@@ -29,7 +29,18 @@ export default class Set {
     return true
   }
 
-  static hasSet () {
+  static hasSet (cards) {
+    for (let i = 0; i < cards.length; i++) {
+      for (let j = i + 1; j < cards.length; j++) {
+        for (let k = j + 1; k < cards.length; k++) {
+          if (this.isSet([i, j, k].map(n => cards[n]))) {
+            console.log(i, j, k)
+            return true
+          }
+        }
+      }
+    }
+
     return false
   }
 }

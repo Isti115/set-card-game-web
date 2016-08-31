@@ -27,6 +27,8 @@ html, body {
   width: 100px;
   height: 150px;
 
+  border-radius: 10px;
+
   z-index: -1;
 
   transform-style: preserve-3d;
@@ -67,6 +69,7 @@ html, body {
   transform: rotateY(180deg);
 
   /*background: repeating-linear-gradient(45deg, yellow, yellow 10px, blue 10px, blue 20px);*/
+  background: white;
 }
 
 .symbolContainer {

@@ -9,12 +9,13 @@ export default class Game {
     this.board = new Board()
     this.stash = new Stash()
 
+    this.minimalCardAmount = 12
     this.changedCards = []
   }
 
   start () {
     this.deck.shuffle()
-    this.deal(12)
+    this.makeBoardValid()
   }
 
   deal (n) {
@@ -27,11 +28,21 @@ export default class Game {
     if (Set.isSet(cards)) {
       this.stash.putCards(this.board.takeCards(cards))
       this.changedCards.push(...cards)
-      if (this.board.cardCount < 12) {
-        this.deal(3)
+      if (this.deck.cards.length > 0) {
+        this.makeBoardValid()
       }
     } else {
       console.log('not set')
+    }
+  }
+
+  makeBoardValid () {
+    if (
+      this.board.cardCount < this.minimalCardAmount ||
+      !Set.hasSet(this.board.conciseCardArray)
+    ) {
+      this.deal(3)
+      this.makeBoardValid()
     }
   }
 }

@@ -22,6 +22,8 @@ const elementIdFromCard = card => `card_${card.color}_${card.shape}_${card.numbe
 
 export default class Renderer {
   constructor (container, game) {
+    window.renderer = this
+
     this.container = container
     this.game = game
 
@@ -93,8 +95,8 @@ export default class Renderer {
           payload: [{
             element: currentElement,
             properties: {
-              transform: `translateX(${100}px)` +
-                `translateY(${500}px)`,
+              transform: `translateX(${15}px)` +
+                `translateY(${365}px)`,
               transition: 'all 0.25s'
             }
           }],
@@ -109,7 +111,6 @@ export default class Renderer {
   }
 
   processQueue () {
-    console.log(this)
     if (this.queue.length === 0) {
       return false
     }

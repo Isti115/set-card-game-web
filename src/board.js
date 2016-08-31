@@ -28,7 +28,11 @@ export default class Board {
     return cards
   }
 
+  get conciseCardArray () {
+    return this.cards.filter(c => c !== undefined)
+  }
+
   get cardCount () {
-    return this.cards.filter(c => c !== undefined).length
+    return this.conciseCardArray.length
   }
 }
