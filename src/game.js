@@ -10,7 +10,7 @@ export default class Game {
     this.stash = new Stash()
 
     this.minimalCardAmount = 12
-    this.changedCards = {dealt: [], stashed: [], moved: []}
+    this.changedCards = {dealt: [], stashed: [], moved: [], shake: []}
   }
 
   start () {
@@ -54,7 +54,7 @@ export default class Game {
         this.changedCards.moved.push(this.board.cards[emptyIndex])
       }
     } else {
-      console.log('not set')
+      this.changedCards.shake.push(...cards)
     }
   }
 
