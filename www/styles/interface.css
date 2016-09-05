@@ -1,0 +1,48 @@
+html, body {
+  margin: 0px;
+  padding: 0px;
+
+  width: 100%;
+  height: 100%;
+
+  perspective: 1000px;
+  perspective-origin: 210px 265px;
+}
+
+body {
+  transform-origin: top left;
+}
+
+#deck {
+  position: absolute;
+
+  width: 110px;
+  height: 160px;
+
+  border-style: dotted;
+  border-color: black;
+  border-width: 3px;
+
+  transform: translateX(10px) translateY(10px);
+}
+
+#timer {
+  position: absolute;
+
+  width: 120px;
+
+  text-align: center;
+
+  font-family: "Century Gothic";
+
+  transform: translateX(150px) translateY(10px);
+}
+
+#time {
+  font-size: 25px;
+}
+
+#spm {
+  margin-top: 10px;
+  font-size: 17px;
+}

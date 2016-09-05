@@ -1,4 +1,5 @@
 import Game from './game'
+import Timer from './timer'
 import Renderer from './renderer'
 
 export default class App {
@@ -7,18 +8,25 @@ export default class App {
 
     this.zoomToFit()
 
-    this.game = new Game()
+    this.game = new Game(this.finished.bind(this))
+    this.timer = new Timer(document.getElementById('timer'), this.game)
 
     this.renderer = new Renderer(this.container, this.game)
     this.renderer.init()
 
     window.addEventListener('keydown', this.keyDown.bind(this), false)
-    this.renderer.elements['deck'].addEventListener('click', this.deal.bind(this), true)
+    document.getElementById('deck').addEventListener('touchstart', this.deal.bind(this), true)
   }
 
   start () {
     this.game.start()
+    this.timer.start()
     this.renderer.render()
+  }
+
+  finished () {
+    console.log('finished')
+    this.timer.stop()
   }
 
   zoomToFit () {
@@ -30,10 +38,18 @@ export default class App {
     if (e.code === 'KeyD') {
       this.deal()
     }
+
+    if (e.code === 'KeyH') {
+      this.hint()
+    }
   }
 
   deal () {
     this.game.deal(3)
     this.renderer.render()
+  }
+
+  hint () {
+    console.log('hint here')
   }
 }

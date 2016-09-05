@@ -4,7 +4,9 @@ import Stash from './stash'
 import Set from './set'
 
 export default class Game {
-  constructor () {
+  constructor (finished) {
+    this.finished = finished
+
     this.deck = new Deck()
     this.board = new Board()
     this.stash = new Stash()
@@ -16,8 +18,6 @@ export default class Game {
   start () {
     this.deck.shuffle()
     this.makeBoardValid()
-
-    this.startTime = Date.now()
   }
 
   deal (n) {
@@ -33,11 +33,7 @@ export default class Game {
       this.stash.putCards(this.board.takeCards(cards))
       this.changedCards.stashed.push(...cards)
 
-      if (this.deck.cards.length > 0) {
-        this.makeBoardValid()
-      } else {
-        window.alert(`Finished in ${(Date.now() - this.startTime) / 1000} seconds.`)
-      }
+      this.makeBoardValid()
 
       while (
         this.board.cards.length > this.minimalCardAmount &&
@@ -63,8 +59,12 @@ export default class Game {
       this.board.cardCount < this.minimalCardAmount ||
       !Set.hasSet(this.board.conciseCardArray)
     ) {
-      this.deal(3)
-      this.makeBoardValid()
+      if (this.deck.cards.length > 0) {
+        this.deal(3)
+        this.makeBoardValid()
+      } else {
+        this.finished()
+      }
     }
   }
 }

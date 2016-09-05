@@ -22,12 +22,9 @@ const elementIdFromCard = card => `card_${card.color}_${card.shape}_${card.numbe
 
 export default class Renderer {
   constructor (container, game) {
-    window.renderer = this
-
     this.container = container
     this.game = game
 
-    this.boardWidth = 4
     this.boardHeight = 3
 
     this.elements = {}
@@ -37,6 +34,8 @@ export default class Renderer {
     this.autoProcessQueue = true
 
     this.selectedCards = []
+
+    this.boardLeft = 300
   }
 
   setContainer (container) {
@@ -48,8 +47,6 @@ export default class Renderer {
   }
 
   init () {
-    this.elements['deck'] = this.renderDeck()
-
     for (const card of this.game.deck.cards) {
       this.elements[elementIdFromCard(card)] = this.renderCard(card)
     }
@@ -60,133 +57,141 @@ export default class Renderer {
   }
 
   render () {
-    // Render card shaking
-    const shakeRight = { payload: [], delay: 50 }
-    const shakeLeft = { payload: [], delay: 50 }
-    const shakeCenter = { payload: [], delay: 50 }
-    for (const card of this.game.changedCards.shake) {
-      const currentElement = this.elements[elementIdFromCard(card)]
-      const i = this.game.board.cards.indexOf(card)
-
-      shakeRight.payload.push({
-        element: currentElement,
-        properties: {
-          transform: `translateX(${300 + (Math.floor(i / 3)) * 125 + 15}px)` +
-            `translateY(${15 + (i % 3) * 175}px)` +
-            'rotateY(180deg)',
-          transition: 'all 100ms'
-        }
-      })
-
-      shakeLeft.payload.push({
-        element: currentElement,
-        properties: {
-          transform: `translateX(${300 + (Math.floor(i / 3)) * 125 - 15}px)` +
-            `translateY(${15 + (i % 3) * 175}px)` +
-            'rotateY(180deg)',
-          transition: 'all 100ms'
-        }
-      })
-
-      shakeCenter.payload.push({
-        element: currentElement,
-        properties: {
-          transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
-            `translateY(${15 + (i % 3) * 175}px)` +
-            'rotateY(180deg)',
-          transition: 'all 100ms'
-        }
-      })
-    }
-    this.game.changedCards.shake = []
-    this.queue.push(
-      shakeRight, shakeLeft,
-      shakeRight, shakeLeft,
-      shakeCenter
-    )
-
     // Render card stashing
-    for (const card of this.game.changedCards.stashed) {
-      const currentElement = this.elements[elementIdFromCard(card)]
-      const i = this.game.stash.cards.indexOf(card)
+    if (this.game.changedCards.stashed.length > 0) {
+      for (const card of this.game.changedCards.stashed) {
+        const currentElement = this.elements[elementIdFromCard(card)]
+        const i = this.game.stash.cards.indexOf(card)
 
-      currentElement.style.zIndex = i
+        currentElement.style.zIndex = i
 
-      this.queue.push({
-        payload: [{
-          element: currentElement,
-          properties: {
-            transform: `translateX(${15}px)` +
-              `translateY(${295 + (i % 3) * 55}px)` +
-              `rotateY(${180}deg)` +
-              `rotateZ(${90}deg)` +
-              `scale(${0.75})`,
-            transition: 'all 250ms'
-          }
-        }],
-        delay: 0
-      })
+        this.queue.push({
+          payload: [{
+            element: currentElement,
+            properties: {
+              transform: `translateX(${15}px)` +
+                `translateY(${295 + (i % this.boardHeight) * 55}px)` +
+                `rotateY(${180}deg)` +
+                `rotateZ(${90}deg)` +
+                `scale(${0.75})`,
+              transition: 'all 250ms'
+            }
+          }],
+          delay: 0
+        })
+      }
+      this.game.changedCards.stashed = []
     }
-    this.game.changedCards.stashed = []
 
     // Render card dealing
-    const dealUp = []
-    const dealDown = []
-    for (const card of this.game.changedCards.dealt) {
-      const currentElement = this.elements[elementIdFromCard(card)]
-      const i = this.game.board.cards.indexOf(card)
+    if (this.game.changedCards.dealt.length > 0) {
+      const dealUp = []
+      const dealDown = []
+      for (const card of this.game.changedCards.dealt) {
+        const currentElement = this.elements[elementIdFromCard(card)]
+        const i = this.game.board.cards.indexOf(card)
 
-      dealUp.push({
-        payload: [{
-          element: currentElement,
-          properties: {
-            transform: `translateX(${165}px)` +
-              `translateY(${190}px)` +
-              'rotateY(180deg)' +
-              'translateZ(-250px)',
-            transition: 'all 400ms'
-          }
-        }],
-        delay: 100
-      })
+        dealUp.push({
+          payload: [{
+            element: currentElement,
+            properties: {
+              transform: `translateX(${165}px)` +
+                `translateY(${190}px)` +
+                'rotateY(180deg)' +
+                'translateZ(-250px)',
+              transition: 'all 400ms'
+            }
+          }],
+          delay: 100
+        })
 
-      dealDown.push({
-        payload: [{
-          element: currentElement,
-          properties: {
-            transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
-              `translateY(${15 + (i % 3) * 175}px)` +
-              'rotateY(180deg)',
-            transition: 'all 300ms'
-          }
-        }],
-        delay: 100
-      })
+        dealDown.push({
+          payload: [{
+            element: currentElement,
+            properties: {
+              transform: `translateX(${this.boardLeft + (Math.floor(i / this.boardHeight)) * 125}px)` +
+                `translateY(${15 + (i % this.boardHeight) * 175}px)` +
+                'rotateY(180deg)',
+              transition: 'all 300ms'
+            }
+          }],
+          delay: 100
+        })
 
-      currentElement.style.zIndex = ++this.maxZIndex
+        currentElement.style.zIndex = ++this.maxZIndex
+      }
+      this.game.changedCards.dealt = []
+      this.queue.push(...dealUp, { payload: [], delay: 500 }, ...dealDown)
     }
-    this.game.changedCards.dealt = []
-    this.queue.push(...dealUp, { payload: [], delay: 500 }, ...dealDown)
+
+    // Render card shaking
+    if (this.game.changedCards.shake.length > 0) {
+      const shakeRight = { payload: [], delay: 50 }
+      const shakeLeft = { payload: [], delay: 50 }
+      const shakeCenter = { payload: [], delay: 50 }
+      for (const card of this.game.changedCards.shake) {
+        const currentElement = this.elements[elementIdFromCard(card)]
+        const i = this.game.board.cards.indexOf(card)
+
+        shakeRight.payload.push({
+          element: currentElement,
+          properties: {
+            transform: `translateX(${this.boardLeft + (Math.floor(i / this.boardHeight)) * 125 + 15}px)` +
+              `translateY(${15 + (i % this.boardHeight) * 175}px)` +
+              'rotateY(180deg)',
+            transition: 'all 100ms'
+          }
+        })
+
+        shakeLeft.payload.push({
+          element: currentElement,
+          properties: {
+            transform: `translateX(${this.boardLeft + (Math.floor(i / this.boardHeight)) * 125 - 15}px)` +
+              `translateY(${15 + (i % this.boardHeight) * 175}px)` +
+              'rotateY(180deg)',
+            transition: 'all 100ms'
+          }
+        })
+
+        shakeCenter.payload.push({
+          element: currentElement,
+          properties: {
+            transform: `translateX(${this.boardLeft + (Math.floor(i / this.boardHeight)) * 125}px)` +
+              `translateY(${15 + (i % this.boardHeight) * 175}px)` +
+              'rotateY(180deg)',
+            transition: 'all 100ms'
+          }
+        })
+      }
+      this.game.changedCards.shake = []
+      this.queue.push(
+        shakeRight, shakeLeft,
+        shakeRight, shakeLeft,
+        shakeCenter
+      )
+    }
 
     // Render card moving
-    for (const card of this.game.changedCards.moved) {
-      const currentElement = this.elements[elementIdFromCard(card)]
-      const i = this.game.board.cards.indexOf(card)
+    if (this.game.changedCards.moved.length > 0) {
+      for (const card of this.game.changedCards.moved) {
+        const currentElement = this.elements[elementIdFromCard(card)]
+        const i = this.game.board.cards.indexOf(card)
 
-      this.queue.push({
-        payload: [{
-          element: currentElement,
-          properties: {
-            transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
-              `translateY(${15 + (i % 3) * 175}px)` +
-              'rotateY(180deg)',
-            transition: 'all 300ms'
-          }
-        }],
-        delay: 100
-      })
+        this.queue.push({
+          payload: [{
+            element: currentElement,
+            properties: {
+              transform: `translateX(${this.boardLeft + (Math.floor(i / this.boardHeight)) * 125}px)` +
+                `translateY(${15 + (i % this.boardHeight) * 175}px)` +
+                'rotateY(180deg)',
+              transition: 'all 300ms'
+            }
+          }],
+          delay: 100
+        })
+      }
+      this.game.changedCards.moved = []
     }
-    this.game.changedCards.moved = []
 
     this.processQueue()
   }
@@ -207,12 +212,6 @@ export default class Renderer {
     if (this.autoProcessQueue) {
       setTimeout(this.processQueue.bind(this), currentQueueItem.delay)
     }
-  }
-
-  renderDeck () {
-    const element = document.createElement('div')
-    element.id = 'deck'
-    return element
   }
 
   renderCard (card) {
@@ -296,16 +295,4 @@ export default class Renderer {
 
     this.selectedCards = []
   }
-
-// getFreeBoardIndices () {
-//   const freeIndices = []
-//
-//   for (let i = 0; i < this.boardWidth * this.boardHeight; i++) {
-//     if (board.cards[i] === undefined) {
-//       freeIndices.push(i)
-//     }
-//   }
-//
-//   return freeIndices
-// }
 }

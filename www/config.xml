@@ -17,10 +17,8 @@
 
   <preference name="permissions" value="none" />
   <preference name="orientation" value="landscape" />
-  <preference name="EnableViewportScale" value="true" />
 
   <icon src="images/icon.png" />
-  <!-- <gap:splash src="images/splash.png" /> -->
 
   <platform name="android" />
 </widget>
