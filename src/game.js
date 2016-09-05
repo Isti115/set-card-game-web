@@ -16,6 +16,8 @@ export default class Game {
   start () {
     this.deck.shuffle()
     this.makeBoardValid()
+
+    this.startTime = Date.now()
   }
 
   deal (n) {
@@ -30,6 +32,8 @@ export default class Game {
       this.changedCards.push(...cards)
       if (this.deck.cards.length > 0) {
         this.makeBoardValid()
+      } else {
+        window.alert(`Finished in ${(Date.now() - this.startTime) / 1000} seconds.`)
       }
     } else {
       console.log('not set')

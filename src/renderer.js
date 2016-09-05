@@ -124,8 +124,6 @@ export default class Renderer {
 
     const currentQueueItem = this.queue.shift()
 
-    console.log(currentQueueItem)
-
     for (const modification of currentQueueItem.payload) {
       for (const property in modification.properties) {
         modification.element.style[property] = modification.properties[property]
