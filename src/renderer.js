@@ -60,9 +60,78 @@ export default class Renderer {
   }
 
   render () {
+    // Render card shaking
+    const shakeRight = { payload: [], delay: 50 }
+    const shakeLeft = { payload: [], delay: 50 }
+    const shakeCenter = { payload: [], delay: 50 }
+    for (const card of this.game.changedCards.shake) {
+      const currentElement = this.elements[elementIdFromCard(card)]
+      const i = this.game.board.cards.indexOf(card)
+
+      shakeRight.payload.push({
+        element: currentElement,
+        properties: {
+          transform: `translateX(${300 + (Math.floor(i / 3)) * 125 + 15}px)` +
+            `translateY(${15 + (i % 3) * 175}px)` +
+            'rotateY(180deg)',
+          transition: 'all 100ms'
+        }
+      })
+
+      shakeLeft.payload.push({
+        element: currentElement,
+        properties: {
+          transform: `translateX(${300 + (Math.floor(i / 3)) * 125 - 15}px)` +
+            `translateY(${15 + (i % 3) * 175}px)` +
+            'rotateY(180deg)',
+          transition: 'all 100ms'
+        }
+      })
+
+      shakeCenter.payload.push({
+        element: currentElement,
+        properties: {
+          transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
+            `translateY(${15 + (i % 3) * 175}px)` +
+            'rotateY(180deg)',
+          transition: 'all 100ms'
+        }
+      })
+    }
+    this.game.changedCards.shake = []
+    this.queue.push(
+      shakeRight, shakeLeft,
+      shakeRight, shakeLeft,
+      shakeCenter
+    )
+
+    // Render card stashing
+    for (const card of this.game.changedCards.stashed) {
+      const currentElement = this.elements[elementIdFromCard(card)]
+      const i = this.game.stash.cards.indexOf(card)
+
+      currentElement.style.zIndex = i
+
+      this.queue.push({
+        payload: [{
+          element: currentElement,
+          properties: {
+            transform: `translateX(${15}px)` +
+              `translateY(${295 + (i % 3) * 55}px)` +
+              `rotateY(${180}deg)` +
+              `rotateZ(${90}deg)` +
+              `scale(${0.75})`,
+            transition: 'all 250ms'
+          }
+        }],
+        delay: 0
+      })
+    }
+    this.game.changedCards.stashed = []
+
+    // Render card dealing
     const dealUp = []
     const dealDown = []
-
     for (const card of this.game.changedCards.dealt) {
       const currentElement = this.elements[elementIdFromCard(card)]
       const i = this.game.board.cards.indexOf(card)
@@ -99,29 +168,7 @@ export default class Renderer {
     this.game.changedCards.dealt = []
     this.queue.push(...dealUp, { payload: [], delay: 500 }, ...dealDown)
 
-    for (const card of this.game.changedCards.stashed) {
-      const currentElement = this.elements[elementIdFromCard(card)]
-      const i = this.game.stash.cards.indexOf(card)
-
-      currentElement.style.zIndex = i
-
-      this.queue.push({
-        payload: [{
-          element: currentElement,
-          properties: {
-            transform: `translateX(${15}px)` +
-              `translateY(${295 + (i % 3) * 55}px)` +
-              `rotateY(${180}deg)` +
-              `rotateZ(${90}deg)` +
-              `scale(${0.75})`,
-            transition: 'all 250ms'
-          }
-        }],
-        delay: 0
-      })
-    }
-    this.game.changedCards.stashed = []
-
+    // Render card moving
     for (const card of this.game.changedCards.moved) {
       const currentElement = this.elements[elementIdFromCard(card)]
       const i = this.game.board.cards.indexOf(card)
@@ -140,58 +187,6 @@ export default class Renderer {
       })
     }
     this.game.changedCards.moved = []
-
-    const shakeRight = []
-    const shakeLeft = []
-    const shakeCenter = []
-    for (const card of this.game.changedCards.shake) {
-      const currentElement = this.elements[elementIdFromCard(card)]
-      const i = this.game.board.cards.indexOf(card)
-
-      shakeRight.push({
-        payload: [{
-          element: currentElement,
-          properties: {
-            transform: `translateX(${300 + (Math.floor(i / 3)) * 125 + 15}px)` +
-              `translateY(${15 + (i % 3) * 175}px)` +
-              'rotateY(180deg)',
-            transition: 'all 100ms'
-          }
-        }],
-        delay: 0
-      })
-
-      shakeLeft.push({
-        payload: [{
-          element: currentElement,
-          properties: {
-            transform: `translateX(${300 + (Math.floor(i / 3)) * 125 - 15}px)` +
-              `translateY(${15 + (i % 3) * 175}px)` +
-              'rotateY(180deg)',
-            transition: 'all 100ms'
-          }
-        }],
-        delay: 0
-      })
-
-      shakeCenter.push({
-        payload: [{
-          element: currentElement,
-          properties: {
-            transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
-              `translateY(${15 + (i % 3) * 175}px)` +
-              'rotateY(180deg)',
-            transition: 'all 100ms'
-          }
-        }],
-        delay: 0
-      })
-    }
-    this.game.changedCards.shake = []
-    this.queue.push(
-      ...shakeRight, { payload: [], delay: 100 },
-      ...shakeLeft, { payload: [], delay: 100 },
-      ...shakeCenter)
 
     this.processQueue()
   }
