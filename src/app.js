@@ -22,9 +22,8 @@ export default class App {
   }
 
   zoomToFit () {
-    const viewport = document.getElementById('viewport')
     const ratio = this.container.clientHeight / 535
-    viewport.setAttribute('content', `initial-scale=${ratio}, user-scalable=no`)
+    document.body.style.transform = `scale(${ratio})`
   }
 
   keyDown (e) {

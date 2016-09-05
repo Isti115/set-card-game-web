@@ -9,6 +9,10 @@ html, body {
   perspective-origin: 210px 265px;
 }
 
+body {
+  transform-origin: top left;
+}
+
 #deck {
   position: absolute;
 
