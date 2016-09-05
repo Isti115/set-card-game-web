@@ -28,6 +28,8 @@ export default class Game {
 
   trySet (cards) {
     if (Set.isSet(cards)) {
+      cards.sort((a, b) => (a.number.charCodeAt(2) - b.number.charCodeAt(2)))
+
       this.stash.putCards(this.board.takeCards(cards))
       this.changedCards.stashed.push(...cards)
 
@@ -41,16 +43,11 @@ export default class Game {
         this.board.cards.length > this.minimalCardAmount &&
         this.board.cards.slice(0, this.minimalCardAmount).includes(undefined)
       ) {
-        console.log(this.board.cards)
-        console.log(this.board.cards.slice(0, this.minimalCardAmount).findIndex(c => c === undefined))
-
         const emptyIndex = this.board.cards.findIndex(c => c === undefined)
         const excessIndex = this.board.cards.length - 1 - this.board.cards
           .slice(this.minimalCardAmount)
           .reverse()
           .findIndex(c => c !== undefined)
-
-        console.log(emptyIndex, excessIndex)
 
         this.board.cards[emptyIndex] = this.board.cards[excessIndex]
         delete this.board.cards[excessIndex]

@@ -100,12 +100,19 @@ export default class Renderer {
 
     for (const card of this.game.changedCards.stashed) {
       const currentElement = this.elements[elementIdFromCard(card)]
+      const i = this.game.stash.cards.indexOf(card)
+
+      currentElement.style.zIndex = i
+
       this.queue.push({
         payload: [{
           element: currentElement,
           properties: {
             transform: `translateX(${15}px)` +
-              `translateY(${365}px)`,
+              `translateY(${295 + (i % 3) * 55}px)` +
+              `rotateY(${180}deg)` +
+              `rotateZ(${90}deg)` +
+              `scale(${0.75})`,
             transition: 'all 250ms'
           }
         }],
