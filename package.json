@@ -1,6 +1,6 @@
 {
   "name": "set-card-game-web",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Set card game to be run in browsers.",
   "scripts": {
     "bundle": "rollup --config --sourcemap inline",
