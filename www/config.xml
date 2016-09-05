@@ -16,9 +16,10 @@
 	</author>
 
 	<preference name="permissions" value="none" />
-	<preference name="orientation" value="portrait" />
+	<preference name="orientation" value="landscape" />
 
 	<icon src="images/icon.png" />
-	<gap:splash src="images/splash.png" />
+	<!-- <gap:splash src="images/splash.png" /> -->
 
+  <platform name="android" />
 </widget>
