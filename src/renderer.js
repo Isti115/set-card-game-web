@@ -243,8 +243,8 @@ export default class Renderer {
 
     symbol.style.background = backgroundFromCardShading(card.shading, card.color)
 
-    symbolContainer.appendChild(symbolOutline)
     symbolContainer.appendChild(symbol)
+    symbolContainer.appendChild(symbolOutline)
 
     for (let i = 0; i < symbolCountFromCardNumber(card.number); i++) {
       front.appendChild(symbolContainer.cloneNode(true))
@@ -253,7 +253,10 @@ export default class Renderer {
     element.appendChild(back)
     element.appendChild(front)
 
-    element.addEventListener('click', (e) => {
+    // element.addEventListener('click', (e) => {
+    //   this.cardClicked(card)
+    // })
+    element.addEventListener('touchstart', (e) => {
       this.cardClicked(card)
     })
 
