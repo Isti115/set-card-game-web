@@ -15,7 +15,7 @@ const symbolCountFromCardNumber = cardNumber => ({
 const backgroundFromCardShading = (cardShading, color) => ({
   [CardProperty.SHADING.SOLID]: `${color}`,
   [CardProperty.SHADING.STRIPED]: `repeating-linear-gradient(90deg, ${color}, ${color} 3px, white 3px, white 6px)`,
-  [CardProperty.SHADING.OUTLINE]: `white`
+  [CardProperty.SHADING.OUTLINE]: 'white'
 }[cardShading])
 
 const elementIdFromCard = card => `card_${card.color}_${card.shape}_${card.number}_${card.shading}`
@@ -63,56 +63,77 @@ export default class Renderer {
     const pickUp = []
     const putDown = []
 
-    for (const card of this.game.changedCards) {
+    for (const card of this.game.changedCards.dealt) {
       const currentElement = this.elements[elementIdFromCard(card)]
-      if (this.game.board.cards.includes(card)) {
-        const i = this.game.board.cards.indexOf(card)
+      const i = this.game.board.cards.indexOf(card)
 
-        pickUp.push({
-          payload: [{
-            element: currentElement,
-            properties: {
-              transform: `translateX(${165}px)` +
-                `translateY(${190}px)` +
-                `rotateY(180deg)` +
-                `translateZ(-250px)`,
-              transition: `all 400ms`
-            }
-          }],
-          delay: 100
-        })
+      pickUp.push({
+        payload: [{
+          element: currentElement,
+          properties: {
+            transform: `translateX(${165}px)` +
+              `translateY(${190}px)` +
+              'rotateY(180deg)' +
+              'translateZ(-250px)',
+            transition: 'all 400ms'
+          }
+        }],
+        delay: 100
+      })
 
-        putDown.push({
-          payload: [{
-            element: currentElement,
-            properties: {
-              transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
-                `translateY(${15 + (i % 3) * 175}px)` +
-                `rotateY(180deg)`,
-              transition: `all 300ms`
-            }
-          }],
-          delay: 100
-        })
+      putDown.push({
+        payload: [{
+          element: currentElement,
+          properties: {
+            transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
+              `translateY(${15 + (i % 3) * 175}px)` +
+              'rotateY(180deg)',
+            transition: 'all 300ms'
+          }
+        }],
+        delay: 100
+      })
 
-        currentElement.style.zIndex = ++this.maxZIndex
-      } else if (this.game.stash.cards.includes(card)) {
-        this.queue.push({
-          payload: [{
-            element: currentElement,
-            properties: {
-              transform: `translateX(${15}px)` +
-                `translateY(${365}px)`,
-              transition: 'all 250ms'
-            }
-          }],
-          delay: 0
-        })
-      }
+      currentElement.style.zIndex = ++this.maxZIndex
     }
-    this.queue.push(...pickUp, { payload: [], delay: 500 }, ...putDown)
+    this.game.changedCards.dealt = []
 
-    this.game.changedCards = []
+    for (const card of this.game.changedCards.stashed) {
+      const currentElement = this.elements[elementIdFromCard(card)]
+      this.queue.push({
+        payload: [{
+          element: currentElement,
+          properties: {
+            transform: `translateX(${15}px)` +
+              `translateY(${365}px)`,
+            transition: 'all 250ms'
+          }
+        }],
+        delay: 0
+      })
+    }
+    this.game.changedCards.stashed = []
+
+    for (const card of this.game.changedCards.moved) {
+      const currentElement = this.elements[elementIdFromCard(card)]
+      const i = this.game.board.cards.indexOf(card)
+
+      this.queue.push({
+        payload: [{
+          element: currentElement,
+          properties: {
+            transform: `translateX(${300 + (Math.floor(i / 3)) * 125}px)` +
+              `translateY(${15 + (i % 3) * 175}px)` +
+              'rotateY(180deg)',
+            transition: 'all 300ms'
+          }
+        }],
+        delay: 100
+      })
+    }
+    this.game.changedCards.moved = []
+
+    this.queue.push(...pickUp, { payload: [], delay: 500 }, ...putDown)
 
     this.processQueue()
   }
