@@ -224,6 +224,8 @@ export default class Renderer {
     const front = document.createElement('div')
     front.classList.add('front')
 
+    const spacer = document.createElement('div')
+
     const symbolContainer = document.createElement('div')
     symbolContainer.classList.add('symbolContainer')
 
@@ -245,9 +247,11 @@ export default class Renderer {
     symbolContainer.appendChild(symbol)
     symbolContainer.appendChild(symbolOutline)
 
+    front.appendChild(spacer.cloneNode(true))
     for (let i = 0; i < symbolCountFromCardNumber(card.number); i++) {
       front.appendChild(symbolContainer.cloneNode(true))
     }
+    front.appendChild(spacer.cloneNode(true))
 
     element.appendChild(back)
     element.appendChild(front)

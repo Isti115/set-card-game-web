@@ -45,8 +45,10 @@ export default class App {
   }
 
   deal () {
-    this.game.deal(3)
-    this.renderer.render()
+    if (this.game.deck.cards.length >= 3) {
+      this.game.deal(3)
+      this.renderer.render()
+    }
   }
 
   hint () {

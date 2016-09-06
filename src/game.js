@@ -34,21 +34,7 @@ export default class Game {
       this.changedCards.stashed.push(...cards)
 
       this.makeBoardValid()
-
-      while (
-        this.board.cards.length > this.minimalCardAmount &&
-        this.board.cards.slice(0, this.minimalCardAmount).includes(undefined)
-      ) {
-        const emptyIndex = this.board.cards.findIndex(c => c === undefined)
-        const excessIndex = this.board.cards.length - 1 - this.board.cards
-          .slice(this.minimalCardAmount)
-          .reverse()
-          .findIndex(c => c !== undefined)
-
-        this.board.cards[emptyIndex] = this.board.cards[excessIndex]
-        delete this.board.cards[excessIndex]
-        this.changedCards.moved.push(this.board.cards[emptyIndex])
-      }
+      this.fillHole()
     } else {
       this.changedCards.shake.push(...cards)
     }
@@ -65,6 +51,21 @@ export default class Game {
       } else {
         this.finished()
       }
+    }
+  }
+
+  fillHole () {
+    const emptyIndex = this.board.cards.findIndex(c => c === undefined)
+    const excessIndex = this.board.cards.length - 1 - [...this.board.cards]
+      .reverse()
+      .findIndex(c => c !== undefined)
+
+    if (emptyIndex < excessIndex) {
+      this.board.cards[emptyIndex] = this.board.cards[excessIndex]
+      delete this.board.cards[excessIndex]
+      this.changedCards.moved.push(this.board.cards[emptyIndex])
+
+      this.fillHole()
     }
   }
 }
