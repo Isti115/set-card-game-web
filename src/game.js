@@ -16,7 +16,9 @@ export default class Game {
   }
 
   reset () {
-    this.deck = new Deck()
+    this.deck.cards.push(...(this.board.cards.filter(c => c !== undefined)))
+    this.deck.cards.push(...this.stash.cards)
+
     this.board = new Board()
     this.stash = new Stash()
   }
