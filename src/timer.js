@@ -4,7 +4,7 @@ export default class Timer {
     this.game = game
 
     this.startTime = 0
-    this.interval = undefined
+    this.active = false
 
     this.time = document.createElement('div')
     this.time.id = 'time'
@@ -17,7 +17,8 @@ export default class Timer {
 
   start () {
     this.startTime = Date.now()
-    this.interval = setInterval(this.update.bind(this), 1000)
+    this.active = true
+    setTimeout(this.update.bind(this), 100)
   }
 
   update () {
@@ -33,10 +34,13 @@ export default class Timer {
       ('0' + Math.floor(seconds)).slice(-2)
 
     this.spm.innerHTML = `${(this.game.stash.cards.length / 3 / minutes).toFixed(3)} <br /> Set/Minute`
+
+    if (this.active) {
+      setTimeout(this.update.bind(this), 1050 - (passedTime % 1000))
+    }
   }
 
   stop () {
-    clearInterval(this.interval)
-    delete this.interval
+    this.active = false
   }
 }

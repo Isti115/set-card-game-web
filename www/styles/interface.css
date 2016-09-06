@@ -13,6 +13,15 @@ body {
   transform-origin: top left;
 }
 
+#startButton {
+  position: absolute;
+
+  width: 100px;
+  height: 30px;
+
+  transform: translateX(10px) translateY(260px);
+}
+
 #deck {
   position: absolute;
 
@@ -22,6 +31,14 @@ body {
   border-style: dotted;
   border-color: black;
   border-width: 3px;
+
+  transform: translateX(10px) translateY(30px);
+}
+
+#deckCounter {
+  position: absolute;
+
+  width: 150px;
 
   transform: translateX(10px) translateY(10px);
 }
@@ -45,4 +62,12 @@ body {
 #spm {
   margin-top: 10px;
   font-size: 17px;
+}
+
+#stashCounter {
+  position: absolute;
+
+  width: 150px;
+
+  transform: translateX(10px) translateY(310px);
 }

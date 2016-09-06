@@ -15,6 +15,12 @@ export default class Game {
     this.changedCards = {dealt: [], stashed: [], moved: [], shake: []}
   }
 
+  reset () {
+    this.deck = new Deck()
+    this.board = new Board()
+    this.stash = new Stash()
+  }
+
   start () {
     this.deck.shuffle()
     this.makeBoardValid()
@@ -60,7 +66,7 @@ export default class Game {
       .reverse()
       .findIndex(c => c !== undefined)
 
-    if (emptyIndex < excessIndex) {
+    if (emptyIndex !== -1 && emptyIndex < excessIndex) {
       this.board.cards[emptyIndex] = this.board.cards[excessIndex]
       delete this.board.cards[excessIndex]
       this.changedCards.moved.push(this.board.cards[emptyIndex])

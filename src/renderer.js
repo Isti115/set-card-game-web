@@ -21,8 +21,12 @@ const backgroundFromCardShading = (cardShading, color) => ({
 const elementIdFromCard = card => `card_${card.color}_${card.shape}_${card.number}_${card.shading}`
 
 export default class Renderer {
-  constructor (container, game) {
-    this.container = container
+  constructor (containerParent, game) {
+    this.containerParent = containerParent
+    this.container = document.createElement('div')
+    this.container.id = 'gameContainer'
+    this.containerParent.appendChild(this.container)
+
     this.game = game
 
     this.boardHeight = 3
@@ -47,12 +51,30 @@ export default class Renderer {
   }
 
   init () {
+    this.elements['deck'] = document.createElement('div')
+    this.elements['deck'].id = 'deck'
+
+    this.elements['deckCounter'] = document.createElement('div')
+    this.elements['deckCounter'].id = 'deckCounter'
+
+    this.elements['timer'] = document.createElement('div')
+    this.elements['timer'].id = 'timer'
+
+    this.elements['stashCounter'] = document.createElement('div')
+    this.elements['stashCounter'].id = 'stashCounter'
+
     for (const card of this.game.deck.cards) {
       this.elements[elementIdFromCard(card)] = this.renderCard(card)
     }
 
     for (const element in this.elements) {
       this.container.appendChild(this.elements[element])
+    }
+  }
+
+  reset () {
+    for (const card of this.game.deck.cards) {
+      this.elements[elementIdFromCard(card)].style.transform = ''
     }
   }
 
@@ -81,6 +103,9 @@ export default class Renderer {
         })
       }
       this.game.changedCards.stashed = []
+
+      this.elements['stashCounter'].innerHTML =
+        `Collected: ${this.game.stash.cards.length / 3} set${this.game.stash.cards.length > 3 ? 's' : ''}`
     }
 
     // Render card dealing
@@ -122,6 +147,8 @@ export default class Renderer {
       }
       this.game.changedCards.dealt = []
       this.queue.push(...dealUp, { payload: [], delay: 500 }, ...dealDown)
+
+      this.elements['deckCounter'].innerHTML = `Remaining: ${this.game.deck.cards.length > 0 ? this.game.deck.cards.length : 'no'} cards`
     }
 
     // Render card shaking

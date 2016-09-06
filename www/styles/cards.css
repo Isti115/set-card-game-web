@@ -13,7 +13,7 @@
 
   /*transform: rotateY(180deg);*/
 
-  transform: translateX(15px) translateY(15px);
+  transform: translateX(15px) translateY(35px);
 
   transition: all 1s;
 }
