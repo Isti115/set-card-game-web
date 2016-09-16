@@ -18,6 +18,13 @@ export default class App {
     this.renderer.elements['deck'].addEventListener('touchstart', this.deal.bind(this), true)
     window.addEventListener('keydown', this.keyDown.bind(this), false)
 
+    this.menuButton = document.createElement('input')
+    this.menuButton.id = 'menuButton'
+    this.menuButton.type = 'button'
+    this.menuButton.value = '<--'
+    this.container.appendChild(this.menuButton)
+    this.menuButton.addEventListener('click', this.menuPressed.bind(this))
+
     this.startButton = document.createElement('input')
     this.startButton.id = 'startButton'
     this.startButton.type = 'button'
@@ -30,7 +37,7 @@ export default class App {
 
   start () {
     this.game.start()
-    this.timer.start()
+    window.setTimeout(this.timer.start.bind(this.timer), 3000)
     this.renderer.render()
     this.state = 'started'
     this.startButton.value = 'Restart'
@@ -39,12 +46,16 @@ export default class App {
   finished () {
     this.timer.stop()
     this.state = 'finished'
-    this.startButton.value = 'Play again'
+    this.startButton.value = 'Again'
   }
 
   reset () {
     this.game.reset()
     this.renderer.reset()
+  }
+
+  menuPressed () {
+    console.log('menu')
   }
 
   zoomToFit () {

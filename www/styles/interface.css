@@ -13,13 +13,22 @@ body {
   transform-origin: top left;
 }
 
-#startButton {
+#menuButton {
   position: absolute;
 
-  width: 100px;
+  width: 40px;
   height: 30px;
 
   transform: translateX(10px) translateY(260px);
+}
+
+#startButton {
+  position: absolute;
+
+  width: 60px;
+  height: 30px;
+
+  transform: translateX(55px) translateY(260px);
 }
 
 #deck {

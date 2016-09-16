@@ -73,6 +73,8 @@ export default class Renderer {
   }
 
   reset () {
+    this.elements['stashCounter'].innerHTML = ''
+
     for (const card of this.game.deck.cards) {
       this.elements[elementIdFromCard(card)].style.transform = ''
     }
