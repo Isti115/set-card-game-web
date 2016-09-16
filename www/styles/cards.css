@@ -15,10 +15,10 @@
 
   transform: translateX(15px) translateY(35px);
 
-  transition: all 1s;
+  transition: transform 1s;
 }
 
-.back, .front {
+.back, .front, .overlay {
   position: absolute;
 
   width: 100%;
@@ -43,10 +43,21 @@
   /*align-items: center;*/
   justify-content: space-around;
 
-  transform: rotateY(180deg);
-
   /*background: repeating-linear-gradient(45deg, yellow, yellow 10px, blue 10px, blue 20px);*/
   background: white;
+}
+
+.front, .overlay {
+  transform: rotateY(180deg);
+}
+
+.overlay {
+  transition: all 150ms;
+}
+
+.selected .overlay {
+  box-shadow: rgba(0, 255, 255, 0.8) 0px 0px 10px 3px;
+  background: rgba(0, 255, 255, 0.2);
 }
 
 .symbolContainer {
