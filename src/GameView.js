@@ -46,6 +46,11 @@ export default class GameView {
     this.timer.stop()
     this.state = 'finished'
     this.startButton.value = 'Again'
+
+    const name = window.prompt('Please enter your name:')
+    const highscores = JSON.parse(window.localStorage.getItem('highscores'))
+    highscores.push({name, score: this.timer.getSpm()})
+    window.localStorage.setItem('highscores', JSON.stringify(highscores.slice(-10)))
   }
 
   reset () {

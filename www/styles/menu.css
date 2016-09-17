@@ -1,0 +1,31 @@
+#menuTitle {
+  position: absolute;
+
+  font-family: "Century Gothic";
+  font-size: 150px;
+
+  transform: translateX(10px) translateY(-20px);
+}
+
+#newGameButton {
+  position: absolute;
+
+  width: 100px;
+  height: 50px;
+
+  transform: translateX(10px) translateY(150px);
+}
+
+#leaderboardTable {
+  position: absolute;
+
+  transform: translateX(10px) translateY(215px);
+
+  border-collapse: collapse;
+}
+
+#leaderboardTable td {
+  border: solid black 1px;
+
+  padding: 5px;
+}
