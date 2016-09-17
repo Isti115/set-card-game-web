@@ -7,6 +7,8 @@ export default class MenuView {
     this.app = app
     this.container = document.createElement('div')
 
+    this.populateLeaderboard = this.populateLeaderboard.bind(this)
+
     // Menu Title
     this.menuTitle = document.createElement('div')
     this.menuTitle.id = 'menuTitle'

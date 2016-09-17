@@ -57,7 +57,7 @@ export default class Game {
         this.deal(3)
         this.makeBoardValid()
       } else if (!Set.hasSet(this.board.conciseCardArray)) {
-        this.finished()
+        this.finished(true)
       }
     }
   }

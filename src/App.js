@@ -30,6 +30,7 @@ export default class App {
   showMenu () {
     this.clearContainer()
     this.container.appendChild(this.menuView.container)
+    this.menuView.populateLeaderboard()
   }
 
   showGame () {

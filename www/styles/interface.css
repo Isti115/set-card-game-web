@@ -11,6 +11,10 @@ html, body {
 
 body {
   transform-origin: top left;
+
+  overflow: hidden;
+
+  -webkit-user-select: none;
 }
 
 #menuButton {
