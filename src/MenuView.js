@@ -13,13 +13,17 @@ export default class MenuView {
     this.menuTitle = document.createElement('div')
     this.menuTitle.id = 'menuTitle'
     this.menuTitle.appendChild(document.createTextNode('SET'))
+    const version = document.createElement('span')
+    version.id = 'version'
+    version.appendChild(document.createTextNode('v0.2.3'))
+    this.menuTitle.appendChild(version)
     this.container.appendChild(this.menuTitle)
 
     // New Game Button
     this.newGameButton = document.createElement('input')
     this.newGameButton.id = 'newGameButton'
     this.newGameButton.type = 'button'
-    this.newGameButton.value = 'New Game'
+    this.newGameButton.value = 'New Game / Continue'
     this.newGameButton.addEventListener('click', this.app.showGame)
     this.container.appendChild(this.newGameButton)
 
@@ -43,6 +47,7 @@ export default class MenuView {
 
     const headerRow = document.createElement('tr')
     const headerCell = document.createElement('th')
+    headerCell.colSpan = '2'
     headerCell.appendChild(document.createTextNode('Highscores'))
     headerRow.appendChild(headerCell)
     this.leaderboardTable.appendChild(headerRow)

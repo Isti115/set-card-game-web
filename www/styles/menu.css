@@ -7,10 +7,15 @@
   transform: translateX(10px) translateY(-20px);
 }
 
+#version {
+  font-size: 20px;
+  vertical-align: baseline;
+}
+
 #newGameButton {
   position: absolute;
 
-  width: 100px;
+  width: 215px;
   height: 50px;
 
   transform: translateX(10px) translateY(150px);
@@ -24,8 +29,17 @@
   border-collapse: collapse;
 }
 
-#leaderboardTable td {
-  border: solid black 1px;
+#leaderboardTable {
+  width: 215px;
+}
 
+#leaderboardTable td {
+  width: 50%;
   padding: 5px;
+
+  border: solid black 1px;
+}
+
+#leaderboardTable td:nth-child(1) {
+  text-align: right;
 }

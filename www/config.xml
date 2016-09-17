@@ -3,7 +3,7 @@
   xmlns = "http://www.w3.org/ns/widgets"
   xmlns:gap = "http://phonegap.com/ns/1.0"
   id = "com.isti115.setcardgame"
-  version = "0.2.2">
+  version = "0.2.3">
 
   <name>Set Card Game</name>
 

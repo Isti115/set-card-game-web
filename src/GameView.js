@@ -64,6 +64,7 @@ export default class GameView {
 
   reset () {
     this.game.reset()
+    this.timer.reset()
     this.renderer.reset()
   }
 

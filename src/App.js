@@ -8,7 +8,7 @@ export default class App {
     this.showMenu = this.showMenu.bind(this)
     this.showGame = this.showGame.bind(this)
 
-    this.zoomToFit()
+    this.zoomToFit(535)
 
     this.menuView = new MenuView(this)
     this.gameView = new GameView(this)
@@ -16,8 +16,8 @@ export default class App {
     this.showMenu()
   }
 
-  zoomToFit () {
-    const ratio = this.container.clientHeight / 535
+  zoomToFit (height) {
+    const ratio = this.container.clientHeight / height
     document.body.style.transform = `scale(${ratio})`
   }
 
@@ -31,10 +31,16 @@ export default class App {
     this.clearContainer()
     this.container.appendChild(this.menuView.container)
     this.menuView.populateLeaderboard()
+
+    this.gameView.timer.stop()
   }
 
   showGame () {
     this.clearContainer()
     this.container.appendChild(this.gameView.container)
+
+    if (this.gameView.state === 'started') {
+      this.gameView.timer.start()
+    }
   }
 }

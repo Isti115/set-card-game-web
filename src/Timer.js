@@ -3,9 +3,6 @@ export default class Timer {
     this.container = container
     this.game = game
 
-    this.startTime = 0
-    this.active = false
-
     this.time = document.createElement('div')
     this.time.id = 'time'
     this.container.appendChild(this.time)
@@ -13,20 +10,25 @@ export default class Timer {
     this.spm = document.createElement('div')
     this.spm.id = 'spm'
     this.container.appendChild(this.spm)
+
+    this.reset()
+  }
+
+  reset () {
+    this.passedTime = 0
+    this.active = false
   }
 
   start () {
-    this.startTime = Date.now()
     this.active = true
-    setTimeout(this.update.bind(this), 100)
+    this.update()
   }
 
   update () {
-    const currentTime = Date.now()
-    const passedTime = currentTime - this.startTime
+    this.passedTime++
 
-    var minutes = passedTime / 1000 / 60
-    var seconds = passedTime / 1000 % 60
+    var minutes = this.passedTime / 60
+    var seconds = this.passedTime % 60
 
     this.time.innerHTML =
       ('0' + Math.floor(minutes)).slice(-2) +
@@ -36,7 +38,7 @@ export default class Timer {
     this.spm.innerHTML = `${this.getSpm()} <br /> Set/Minute`
 
     if (this.active) {
-      setTimeout(this.update.bind(this), 1050 - (passedTime % 1000))
+      setTimeout(this.update.bind(this), 1000)
     }
   }
 
@@ -45,10 +47,7 @@ export default class Timer {
   }
 
   getSpm () {
-    const currentTime = Date.now()
-    const passedTime = currentTime - this.startTime
-
-    var minutes = passedTime / 1000 / 60
+    var minutes = this.passedTime / 60
 
     return (this.game.stash.cards.length / 3 / minutes).toFixed(3)
   }
