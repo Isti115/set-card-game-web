@@ -16,34 +16,37 @@ body {
 
   -webkit-user-select: none;
 
-  transition: background 1s, filter 1s;
+  transition: background 1s, filter 1s, -webkit-filter 1s;
 }
 
 body.nightMode {
   background: black;
   filter: invert(100%);
+  -webkit-filter: invert(100%);
+}
+
+#menuButton, #startButton {
+  position: absolute;
+
+  width: 120px;
+  height: 40px;
+
+  z-index: -1;
 }
 
 #menuButton {
-  position: absolute;
-
-  width: 120px;
-  height: 30px;
-
-  transform: translateX(10px) translateY(5px);
+  transform: translateX(10px) translateY(10px);
 }
 
 #startButton {
-  position: absolute;
-
-  width: 120px;
-  height: 30px;
-
-  transform: translateX(150px) translateY(5px);
+  transform: translateX(150px) translateY(10px);
 }
 
 #gameContainer {
-  transform: translateY(30px);
+  transform: translateY(50px);
+
+  perspective: 1000px;
+  perspective-origin: 210px 265px;
 }
 
 #deck {
@@ -93,5 +96,5 @@ body.nightMode {
 
   width: 150px;
 
-  transform: translateX(10px) translateY(310px);
+  transform: translateX(10px) translateY(250px);
 }

@@ -39,6 +39,7 @@ export default class Renderer {
 
     this.selectedCards = []
 
+    this.boardTop = -40
     this.boardLeft = 300
   }
 
@@ -78,6 +79,16 @@ export default class Renderer {
 
     for (const card of this.game.deck.cards) {
       this.elements[elementIdFromCard(card)].style.transform = ''
+      this.elements[elementIdFromCard(card)].style.zIndex = -1
+    }
+  }
+
+  positionFromIndex (i) {
+    return {
+      x: i < 15
+        ? this.boardLeft + (Math.floor(i / this.boardHeight)) * 125
+        : this.boardLeft - (Math.floor((i - 12) / this.boardHeight)) * 125,
+      y: this.boardTop + (i % this.boardHeight) * 170
     }
   }
 
@@ -94,11 +105,11 @@ export default class Renderer {
           payload: [{
             element: currentElement,
             properties: {
-              transform: `translateX(${15}px)` +
-                `translateY(${295 + (i % this.boardHeight) * 55}px)` +
+              transform: `translateX(${10}px)` +
+                `translateY(${235 + (i % this.boardHeight) * 50}px)` +
                 `rotateY(${180}deg)` +
                 `rotateZ(${90}deg)` +
-                `scale(${0.75})`,
+                `scale(${0.7})`,
               transition: 'transform 250ms'
             }
           }],
@@ -119,6 +130,7 @@ export default class Renderer {
         const currentElement = this.elements[elementIdFromCard(card)]
         currentElement.style.zIndex = ++this.maxZIndex
         const i = this.game.board.cards.indexOf(card)
+        const position = this.positionFromIndex(i)
 
         dealUp.push({
           payload: [{
@@ -138,8 +150,8 @@ export default class Renderer {
           payload: [{
             element: currentElement,
             properties: {
-              transform: `translateX(${this.boardLeft + (Math.floor(i / this.boardHeight)) * 125}px)` +
-                `translateY(${15 + (i % this.boardHeight) * 175}px)` +
+              transform: `translateX(${position.x}px)` +
+                `translateY(${position.y}px)` +
                 'rotateY(180deg)',
               transition: 'transform 300ms'
             }
@@ -161,12 +173,13 @@ export default class Renderer {
       for (const card of this.game.changedCards.shake) {
         const currentElement = this.elements[elementIdFromCard(card)]
         const i = this.game.board.cards.indexOf(card)
+        const position = this.positionFromIndex(i)
 
         shakeRight.payload.push({
           element: currentElement,
           properties: {
-            transform: `translateX(${this.boardLeft + (Math.floor(i / this.boardHeight)) * 125 + 15}px)` +
-              `translateY(${15 + (i % this.boardHeight) * 175}px)` +
+            transform: `translateX(${position.x + 15}px)` +
+              `translateY(${position.y}px)` +
               'rotateY(180deg)',
             transition: 'transform 100ms'
           }
@@ -175,8 +188,8 @@ export default class Renderer {
         shakeLeft.payload.push({
           element: currentElement,
           properties: {
-            transform: `translateX(${this.boardLeft + (Math.floor(i / this.boardHeight)) * 125 - 15}px)` +
-              `translateY(${15 + (i % this.boardHeight) * 175}px)` +
+            transform: `translateX(${position.x - 15}px)` +
+              `translateY(${position.y}px)` +
               'rotateY(180deg)',
             transition: 'transform 100ms'
           }
@@ -185,8 +198,8 @@ export default class Renderer {
         shakeCenter.payload.push({
           element: currentElement,
           properties: {
-            transform: `translateX(${this.boardLeft + (Math.floor(i / this.boardHeight)) * 125}px)` +
-              `translateY(${15 + (i % this.boardHeight) * 175}px)` +
+            transform: `translateX(${position.x}px)` +
+              `translateY(${position.y}px)` +
               'rotateY(180deg)',
             transition: 'transform 100ms'
           }
@@ -205,13 +218,14 @@ export default class Renderer {
       for (const card of this.game.changedCards.moved) {
         const currentElement = this.elements[elementIdFromCard(card)]
         const i = this.game.board.cards.indexOf(card)
+        const position = this.positionFromIndex(i)
 
         this.queue.push({
           payload: [{
             element: currentElement,
             properties: {
-              transform: `translateX(${this.boardLeft + (Math.floor(i / this.boardHeight)) * 125}px)` +
-                `translateY(${15 + (i % this.boardHeight) * 175}px)` +
+              transform: `translateX(${position.x}px)` +
+                `translateY(${position.y}px)` +
                 'rotateY(180deg)',
               transition: 'transform 300ms'
             }

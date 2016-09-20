@@ -13,7 +13,7 @@ export default class MenuView {
     this.menuTitle.appendChild(document.createTextNode('SET'))
     const version = document.createElement('span')
     version.id = 'version'
-    version.appendChild(document.createTextNode('v0.2.5'))
+    version.appendChild(document.createTextNode('v0.2.6'))
     this.menuTitle.appendChild(version)
     this.container.appendChild(this.menuTitle)
 
