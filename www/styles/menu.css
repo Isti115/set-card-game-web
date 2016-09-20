@@ -24,18 +24,20 @@
 #leaderboardTable {
   position: absolute;
 
-  transform: translateX(10px) translateY(215px);
+  transform: translateX(300px) translateY(15px);
 
   border-collapse: collapse;
 }
 
 #leaderboardTable {
   width: 215px;
+
+  font-size: 25px;
 }
 
 #leaderboardTable td {
   width: 50%;
-  padding: 5px;
+  padding: 3px 10px;
 
   border: solid black 1px;
 }

@@ -20,7 +20,7 @@ export default class GameView {
     this.menuButton = document.createElement('input')
     this.menuButton.id = 'menuButton'
     this.menuButton.type = 'button'
-    this.menuButton.value = '<--'
+    this.menuButton.value = 'Menu / Pause'
     this.container.appendChild(this.menuButton)
     this.menuButton.addEventListener('click', this.menuPressed.bind(this))
 
@@ -62,7 +62,7 @@ export default class GameView {
 
         highscores.push({name, score: this.timer.getSpm()})
         window.localStorage.setItem('highscores', JSON.stringify(
-          highscores.sort((a, b) => b.score - a.score).slice(0, 5)
+          highscores.sort((a, b) => b.score - a.score).slice(0, 10)
         ))
       }
     }
@@ -80,9 +80,7 @@ export default class GameView {
         this.app.showMenu()
       },
       started: () => {
-        if (window.confirm('Are you sure?')) {
-          this.app.showMenu()
-        }
+        this.app.showMenu()
       },
       finished: () => {
         this.app.showMenu()

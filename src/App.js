@@ -8,7 +8,7 @@ export default class App {
     this.showMenu = this.showMenu.bind(this)
     this.showGame = this.showGame.bind(this)
 
-    this.zoomToFit(535)
+    this.zoomToFit(557)
 
     this.menuView = new MenuView(this)
     this.gameView = new GameView(this)

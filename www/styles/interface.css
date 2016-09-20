@@ -20,19 +20,23 @@ body {
 #menuButton {
   position: absolute;
 
-  width: 40px;
+  width: 120px;
   height: 30px;
 
-  transform: translateX(10px) translateY(260px);
+  transform: translateX(10px) translateY(5px);
 }
 
 #startButton {
   position: absolute;
 
-  width: 60px;
+  width: 120px;
   height: 30px;
 
-  transform: translateX(55px) translateY(260px);
+  transform: translateX(150px) translateY(5px);
+}
+
+#gameContainer {
+  transform: translateY(30px);
 }
 
 #deck {

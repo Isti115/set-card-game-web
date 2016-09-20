@@ -56,6 +56,7 @@ export default class Renderer {
 
     this.elements['deckCounter'] = document.createElement('div')
     this.elements['deckCounter'].id = 'deckCounter'
+    this.elements['deckCounter'].innerHTML = `Remaining: ${this.game.deck.cards.length > 0 ? this.game.deck.cards.length : 'no'} cards`
 
     this.elements['timer'] = document.createElement('div')
     this.elements['timer'].id = 'timer'
