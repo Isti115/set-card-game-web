@@ -1,6 +1,4 @@
-import Game from './Game'
-import Timer from './Timer'
-import Renderer from './Renderer'
+import settings from './settings'
 
 export default class MenuView {
   constructor (app) {
@@ -15,9 +13,11 @@ export default class MenuView {
     this.menuTitle.appendChild(document.createTextNode('SET'))
     const version = document.createElement('span')
     version.id = 'version'
-    version.appendChild(document.createTextNode('v0.2.4'))
+    version.appendChild(document.createTextNode('v0.2.5'))
     this.menuTitle.appendChild(version)
     this.container.appendChild(this.menuTitle)
+
+    this.container.appendChild(settings.container)
 
     // New Game Button
     this.newGameButton = document.createElement('input')

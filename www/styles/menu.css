@@ -12,13 +12,30 @@
   vertical-align: baseline;
 }
 
+#settings {
+  position: absolute;
+
+  font-size: 30px;
+
+  transform: translateX(10px) translateY(150px);
+}
+
+#settings input[type="checkbox"] {
+  width: 30px;
+  height: 30px;
+}
+
+#settings label {
+  vertical-align: top;
+}
+
 #newGameButton {
   position: absolute;
 
   width: 215px;
   height: 50px;
 
-  transform: translateX(10px) translateY(150px);
+  transform: translateX(10px) translateY(195px);
 }
 
 #leaderboardTable {
