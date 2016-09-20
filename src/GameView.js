@@ -48,9 +48,15 @@ export default class GameView {
     this.startButton.value = 'Again'
 
     if (real) {
-      const name = window.prompt('Please enter your name:')
+      if (!window.localStorage.getItem('lastUsedName')) {
+        window.localStorage.setItem('lastUsedName', 'Guest')
+      }
+      const lastUsedName = window.localStorage.getItem('lastUsedName')
+
+      const name = window.prompt('Please enter your name:', lastUsedName)
 
       if (name) {
+        window.localStorage.setItem('lastUsedName', name)
         const highscores = JSON.parse(window.localStorage.getItem('highscores'))
         console.log(highscores)
 
