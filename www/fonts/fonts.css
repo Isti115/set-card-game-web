@@ -1,0 +1,9 @@
+@font-face {
+  font-family: 'Muli Regular';
+  src: url('./Muli-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Muli Light';
+  src: url('./Muli-Light.woff') format('woff');
+}

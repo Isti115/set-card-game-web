@@ -47,25 +47,27 @@ export default class GameView {
     this.state = 'finished'
     this.startButton.value = 'Again'
 
-    if (real) {
-      if (!window.localStorage.getItem('lastUsedName')) {
-        window.localStorage.setItem('lastUsedName', 'Guest')
+    setTimeout(() => {
+      if (real) {
+        if (!window.localStorage.getItem('lastUsedName')) {
+          window.localStorage.setItem('lastUsedName', 'Guest')
+        }
+        const lastUsedName = window.localStorage.getItem('lastUsedName')
+
+        const name = window.prompt('Please enter your name:', lastUsedName)
+
+        if (name) {
+          window.localStorage.setItem('lastUsedName', name)
+          const highscores = JSON.parse(window.localStorage.getItem('highscores'))
+          console.log(highscores)
+
+          highscores.push({name, score: this.timer.getSpm()})
+          window.localStorage.setItem('highscores', JSON.stringify(
+            highscores.sort((a, b) => b.score - a.score).slice(0, 10)
+          ))
+        }
       }
-      const lastUsedName = window.localStorage.getItem('lastUsedName')
-
-      const name = window.prompt('Please enter your name:', lastUsedName)
-
-      if (name) {
-        window.localStorage.setItem('lastUsedName', name)
-        const highscores = JSON.parse(window.localStorage.getItem('highscores'))
-        console.log(highscores)
-
-        highscores.push({name, score: this.timer.getSpm()})
-        window.localStorage.setItem('highscores', JSON.stringify(
-          highscores.sort((a, b) => b.score - a.score).slice(0, 10)
-        ))
-      }
-    }
+    }, 300)
   }
 
   reset () {

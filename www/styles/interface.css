@@ -14,6 +14,7 @@ body {
 
   overflow: hidden;
 
+  font-family: "Muli Light";
   -webkit-user-select: none;
 
   transition: background 1s, filter 1s, -webkit-filter 1s;
@@ -30,6 +31,8 @@ body.nightMode {
 
   width: 120px;
   height: 40px;
+
+  font-size: 14px;
 
   z-index: -1;
 }
@@ -65,8 +68,6 @@ body.nightMode {
 #deckCounter {
   position: absolute;
 
-  width: 150px;
-
   transform: translateX(10px) translateY(10px);
 }
 
@@ -76,8 +77,6 @@ body.nightMode {
   width: 120px;
 
   text-align: center;
-
-  font-family: "Century Gothic";
 
   transform: translateX(150px) translateY(10px);
 }

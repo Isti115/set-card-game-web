@@ -25,8 +25,6 @@ export default class Timer {
   }
 
   update () {
-    this.passedTime++
-
     var minutes = this.passedTime / 60
     var seconds = this.passedTime % 60
 
@@ -36,6 +34,8 @@ export default class Timer {
       ('0' + Math.floor(seconds)).slice(-2)
 
     this.spm.innerHTML = `${this.getSpm()} <br /> Set/Minute`
+
+    this.passedTime++
 
     if (this.active) {
       setTimeout(this.update.bind(this), 1000)
@@ -49,6 +49,6 @@ export default class Timer {
   getSpm () {
     var minutes = this.passedTime / 60
 
-    return (this.game.stash.cards.length / 3 / minutes).toFixed(3)
+    return (this.game.stash.cards.length / 3 / minutes || 0).toFixed(3)
   }
 }

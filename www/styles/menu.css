@@ -1,15 +1,21 @@
 #menuTitle {
   position: absolute;
 
-  font-family: "Century Gothic";
   font-size: 150px;
 
   transform: translateX(10px) translateY(-20px);
 }
 
-#version {
-  font-size: 20px;
-  vertical-align: baseline;
+#about {
+  position: absolute;
+
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 15px;
+
+  transform: translateX(20px) translateY(135px);
 }
 
 #settings {
@@ -17,12 +23,14 @@
 
   font-size: 30px;
 
-  transform: translateX(10px) translateY(150px);
+  transform: translateX(20px) translateY(165px);
 }
 
 #settings input[type="checkbox"] {
   width: 30px;
   height: 30px;
+
+  margin-left: 0px;
 }
 
 #settings label {
@@ -35,7 +43,9 @@
   width: 215px;
   height: 50px;
 
-  transform: translateX(10px) translateY(195px);
+  font-size: 18px;
+
+  transform: translateX(20px) translateY(210px);
 }
 
 #leaderboardTable {

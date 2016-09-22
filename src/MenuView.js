@@ -11,12 +11,25 @@ export default class MenuView {
     this.menuTitle = document.createElement('div')
     this.menuTitle.id = 'menuTitle'
     this.menuTitle.appendChild(document.createTextNode('SET'))
-    const version = document.createElement('span')
-    version.id = 'version'
-    version.appendChild(document.createTextNode('v0.2.6'))
-    this.menuTitle.appendChild(version)
     this.container.appendChild(this.menuTitle)
 
+    // About
+    const about = document.createElement('span')
+    about.id = 'about'
+
+    const author = document.createElement('span')
+    author.id = 'author'
+    author.appendChild(document.createTextNode('by Isti115'))
+    about.appendChild(author)
+
+    const version = document.createElement('span')
+    version.id = 'version'
+    version.appendChild(document.createTextNode('v0.2.7'))
+    about.appendChild(version)
+
+    this.container.appendChild(about)
+
+    // Settings
     this.container.appendChild(settings.container)
 
     // New Game Button
