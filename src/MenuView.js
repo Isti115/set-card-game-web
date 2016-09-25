@@ -4,8 +4,9 @@ export default class MenuView {
   constructor (app) {
     this.app = app
     this.container = document.createElement('div')
+    this.container.id = 'menuView'
 
-    this.populateLeaderboard = this.populateLeaderboard.bind(this)
+    this.updateHighscoreTables = this.updateHighscoreTables.bind(this)
 
     // Menu Title
     this.menuTitle = document.createElement('div')
@@ -24,7 +25,7 @@ export default class MenuView {
 
     const version = document.createElement('span')
     version.id = 'version'
-    version.appendChild(document.createTextNode('v0.2.7'))
+    version.appendChild(document.createTextNode('v0.2.8'))
     about.appendChild(version)
 
     this.container.appendChild(about)
@@ -40,43 +41,112 @@ export default class MenuView {
     this.newGameButton.addEventListener('click', this.app.showGame)
     this.container.appendChild(this.newGameButton)
 
-    // Leaderboard Table
-    this.leaderboardTable = document.createElement('table')
-    this.leaderboardTable.id = 'leaderboardTable'
-    this.container.appendChild(this.leaderboardTable)
+    // Highscore Tables
 
-    this.populateLeaderboard()
+    this.highscoreTableContainer = document.createElement('div')
+    // this.highscoreTableContainer.setAttribute('score-type', 'local')
+    this.highscoreTableContainer.id = 'highscoreTableContainer'
+
+    this.highscoreTables = []
+
+    this.localHighscoreTable = this.makeHighscoreTable('Local Highscores')
+    this.localHighscoreTable.id = 'localHighscoreTable'
+    this.localHighscoreTable.storageKey = 'localScores'
+    this.highscoreTables.push(this.localHighscoreTable)
+
+    this.globalHighscoreTable = this.makeHighscoreTable('Global Highscores')
+    this.globalHighscoreTable.id = 'globalHighscoreTable'
+    this.globalHighscoreTable.storageKey = 'globalScores'
+    this.highscoreTables.push(this.globalHighscoreTable)
+
+    this.dailyHighscoreTable = this.makeHighscoreTable('---')
+    this.dailyHighscoreTable.id = 'dailyHighscoreTable'
+    this.dailyHighscoreTable.storageKey = 'dailyScores'
+    this.highscoreTables.push(this.dailyHighscoreTable)
+
+    this.personalHighScoreTable = this.makeHighscoreTable('---')
+    this.personalHighScoreTable.id = 'parsonalHighscoreTable'
+    this.personalHighScoreTable.storageKey = 'personalScores'
+    this.highscoreTables.push(this.personalHighScoreTable)
+
+    for (const highscoreTable of this.highscoreTables) {
+      this.highscoreTableContainer.appendChild(highscoreTable)
+    }
+
+    this.container.appendChild(this.highscoreTableContainer)
+
+    this.highscoreTableRotation = 0
+
+    this.highscoreTableContainer.addEventListener('touchstart', (e) => {
+      this.touchStartX = e.changedTouches[0].clientX
+    })
+    this.highscoreTableContainer.addEventListener('touchend', (e) => {
+      this.rotateHighscoreTables((e.changedTouches[0].clientX - this.touchStartX) / Math.abs(e.changedTouches[0].clientX - this.touchStartX))
+    })
+
+    this.highscoreRotationHelp = document.createElement('span')
+    this.highscoreRotationHelp.id = 'highscoreRotationHelp'
+    this.highscoreRotationHelp.appendChild(document.createTextNode('Swipe or drag left / right to change view!'))
+    this.container.appendChild(this.highscoreRotationHelp)
   }
 
-  populateLeaderboard () {
-    if (!window.localStorage.getItem('highscores')) {
-      window.localStorage.setItem('highscores', '[]')
-    }
-    const scores = JSON.parse(window.localStorage.getItem('highscores'))
+  makeHighscoreTable (title) {
+    const highscoreTable = document.createElement('table')
 
-    while (this.leaderboardTable.firstChild) {
-      this.leaderboardTable.removeChild(this.leaderboardTable.firstChild)
-    }
+    const thead = document.createElement('thead')
 
     const headerRow = document.createElement('tr')
     const headerCell = document.createElement('th')
     headerCell.colSpan = '2'
-    headerCell.appendChild(document.createTextNode('Highscores'))
+    headerCell.appendChild(document.createTextNode(title))
     headerRow.appendChild(headerCell)
-    this.leaderboardTable.appendChild(headerRow)
+    thead.appendChild(headerRow)
+
+    highscoreTable.appendChild(thead)
+
+    const tbody = document.createElement('tbody')
+    highscoreTable.appendChild(tbody)
+    highscoreTable.body = tbody
+
+    return highscoreTable
+  }
+
+  populateHighscoreTable (highscoreTable, scores) {
+    while (highscoreTable.body.firstChild) {
+      highscoreTable.body.removeChild(highscoreTable.body.firstChild)
+    }
 
     for (const score of scores) {
       const tr = document.createElement('tr')
 
-      const td1 = document.createElement('td')
-      td1.appendChild(document.createTextNode(score.name))
-      tr.appendChild(td1)
+      const nameTd = document.createElement('td')
+      nameTd.appendChild(document.createTextNode(score.name))
+      tr.appendChild(nameTd)
 
-      const td2 = document.createElement('td')
-      td2.appendChild(document.createTextNode(score.score))
-      tr.appendChild(td2)
+      const scoreTd = document.createElement('td')
+      scoreTd.appendChild(document.createTextNode(score.score.toFixed(3)))
+      tr.appendChild(scoreTd)
 
-      this.leaderboardTable.appendChild(tr)
+      highscoreTable.body.appendChild(tr)
     }
+  }
+
+  updateHighscoreTables () {
+    for (const highscoreTable of this.highscoreTables) {
+      console.log(highscoreTable)
+      console.log(highscoreTable.storageKey)
+
+      if (!window.localStorage.getItem(highscoreTable.storageKey)) {
+        window.localStorage.setItem(highscoreTable.storageKey, '[]')
+      }
+      const scores = JSON.parse(window.localStorage.getItem(highscoreTable.storageKey))
+
+      this.populateHighscoreTable(highscoreTable, scores)
+    }
+  }
+
+  rotateHighscoreTables (direction) {
+    this.highscoreTableContainer.style.transform =
+      `translateX(375px) translateY(15px) rotateY(${this.highscoreTableRotation += 90 * direction}deg)`
   }
 }

@@ -1,3 +1,8 @@
+#menuView {
+  perspective: 1000px;
+  perspective-origin: 500px 15px;
+}
+
 #menuTitle {
   position: absolute;
 
@@ -48,27 +53,64 @@
   transform: translateX(20px) translateY(210px);
 }
 
-#leaderboardTable {
+#highscoreTableContainer {
   position: absolute;
+  width: 250px;
 
-  transform: translateX(300px) translateY(15px);
+  display: flex;
 
-  border-collapse: collapse;
+  transform-style: preserve-3d;
+
+  transform: translateX(375px) translateY(15px);
+  transition: transform 1s;
 }
 
-#leaderboardTable {
-  width: 215px;
+/*
+#highscoreTableContainer[score-type='local'] { transform: translateX(375px) translateY(15px) rotateY(0deg); }
+#highscoreTableContainer[score-type='global'] { transform: translateX(375px) translateY(15px) rotateY(90deg); }
+#highscoreTableContainer[score-type='daily'] { transform: translateX(375px) translateY(15px) rotateY(-90deg); }
+#highscoreTableContainer[score-type='personal'] { transform: translateX(375px) translateY(15px) rotateY(180deg); }
+*/
+
+#highscoreTableContainer table {
+  position: absolute;
+
+  border-collapse: collapse;
+
+  backface-visibility: hidden;
 
   font-size: 25px;
 }
 
-#leaderboardTable td {
+#highscoreTableContainer table td {
   width: 50%;
   padding: 3px 10px;
 
   border: solid black 1px;
 }
 
-#leaderboardTable td:nth-child(1) {
+#highscoreTableContainer table td:nth-child(1) {
   text-align: right;
+}
+
+#localHighscoreTable {
+  transform: translateZ(100px);
+}
+
+#globalHighscoreTable {
+  transform: rotateY(90deg) translateZ(100px);
+}
+
+#dailyHighscoreTable {
+  transform: rotateY(-90deg) translateZ(100px);
+}
+
+#parsonalHighscoreTable {
+  transform: rotateY(180deg) translateZ(100px);
+}
+
+#highscoreRotationHelp {
+  position: absolute;
+
+  transform: translateX(335px) translateY(0px);
 }

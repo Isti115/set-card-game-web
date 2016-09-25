@@ -1,3 +1,4 @@
+import webSocketManager from './webSocketManager'
 import MenuView from './MenuView'
 import GameView from './GameView'
 
@@ -13,7 +14,12 @@ export default class App {
     this.menuView = new MenuView(this)
     this.gameView = new GameView(this)
 
+    webSocketManager.scoreReceived.push(this.menuView.updateHighscoreTables)
+
     this.showMenu()
+
+    window.wsm = webSocketManager
+    webSocketManager.open()
   }
 
   zoomToFit (height) {
@@ -29,8 +35,8 @@ export default class App {
 
   showMenu () {
     this.clearContainer()
+    this.menuView.updateHighscoreTables()
     this.container.appendChild(this.menuView.container)
-    this.menuView.populateLeaderboard()
 
     this.gameView.timer.stop()
   }

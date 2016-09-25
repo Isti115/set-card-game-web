@@ -5,5 +5,8 @@
   },
   "extends": [
     "standard"
-  ]
+  ],
+  "rules": {
+    "no-multiple-empty-lines": "off"
+  }
 }

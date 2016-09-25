@@ -1,3 +1,4 @@
+import webSocketManager from './webSocketManager'
 import Game from './Game'
 import Timer from './Timer'
 import Renderer from './Renderer'
@@ -6,6 +7,7 @@ export default class GameView {
   constructor (app) {
     this.app = app
     this.container = document.createElement('div')
+    this.container.id = 'gameView'
 
     this.game = new Game(this.finished.bind(this))
 
@@ -58,13 +60,16 @@ export default class GameView {
 
         if (name) {
           window.localStorage.setItem('lastUsedName', name)
-          const highscores = JSON.parse(window.localStorage.getItem('highscores'))
-          console.log(highscores)
+          const highscores = JSON.parse(window.localStorage.getItem('localScores'))
 
-          highscores.push({name, score: this.timer.getSpm()})
-          window.localStorage.setItem('highscores', JSON.stringify(
+          const score = this.timer.getSpm()
+
+          highscores.push({name, score})
+          window.localStorage.setItem('localScores', JSON.stringify(
             highscores.sort((a, b) => b.score - a.score).slice(0, 10)
           ))
+
+          webSocketManager.sendScore(name, score)
         }
       }
     }, 300)
