@@ -75,6 +75,9 @@ export default class Renderer {
   }
 
   reset () {
+    this.queue = []
+    clearTimeout(this.queueTimeout)
+
     this.elements['stashCounter'].innerHTML = ''
 
     for (const card of this.game.deck.cards) {
@@ -253,7 +256,7 @@ export default class Renderer {
     }
 
     if (this.autoProcessQueue) {
-      setTimeout(this.processQueue.bind(this), currentQueueItem.delay)
+      this.queueTimeout = setTimeout(this.processQueue.bind(this), currentQueueItem.delay)
     }
   }
 

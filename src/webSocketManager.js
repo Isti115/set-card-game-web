@@ -4,17 +4,39 @@ class WebSocketManager {
 
     this.open = this.open.bind(this)
     this.message = this.message.bind(this)
+    this.close = this.close.bind(this)
     this.sendScore = this.sendScore.bind(this)
 
-    this.globalScores = []
-    this.dailyScores = []
+    this.statusIndicator = document.createElement('div')
+    this.statusIndicator.id = 'websocketStatusIndicator'
+
+    this.indicatorDiv = document.createElement('div')
+    this.indicatorDiv.id = 'indicatorDiv'
+    this.statusIndicator.appendChild(this.indicatorDiv)
+
+    this.statusIndicator.appendChild(document.createTextNode('WebSocket status: '))
+    this.statusSpan = document.createElement('span')
+    this.statusIndicator.appendChild(this.statusSpan)
+
+    this.statusIndicator.setAttribute('status', 'inactive')
+    this.statusSpan.innerText = 'Inactive'
+
+    this.statusIndicator.addEventListener('click', () => this.init())
 
     this.scoreReceived = []
   }
 
-  open () {
+  init () {
     this.ws = new window.WebSocket(this.address)
+    this.ws.addEventListener('open', this.open)
     this.ws.addEventListener('message', this.message)
+    this.ws.addEventListener('error', this.error)
+    this.ws.addEventListener('close', this.close)
+  }
+
+  open () {
+    this.statusIndicator.setAttribute('status', 'open')
+    this.statusSpan.innerText = 'Open'
   }
 
   message (msg) {
@@ -28,6 +50,11 @@ class WebSocketManager {
     for (const callback of this.scoreReceived) {
       callback()
     }
+  }
+
+  close () {
+    this.statusIndicator.setAttribute('status', 'closed')
+    this.statusSpan.innerText = 'Closed'
   }
 
   sendScore (name, score) {

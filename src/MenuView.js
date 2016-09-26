@@ -1,4 +1,5 @@
 import settings from './settings'
+import webSocketManager from './webSocketManager'
 
 export default class MenuView {
   constructor (app) {
@@ -25,7 +26,7 @@ export default class MenuView {
 
     const version = document.createElement('span')
     version.id = 'version'
-    version.appendChild(document.createTextNode('v0.2.8'))
+    version.appendChild(document.createTextNode('v0.2.9'))
     about.appendChild(version)
 
     this.container.appendChild(about)
@@ -40,6 +41,9 @@ export default class MenuView {
     this.newGameButton.value = 'New Game / Continue'
     this.newGameButton.addEventListener('click', this.app.showGame)
     this.container.appendChild(this.newGameButton)
+
+    // Server Connection Status
+    this.container.appendChild(webSocketManager.statusIndicator)
 
     // Highscore Tables
 
@@ -81,7 +85,8 @@ export default class MenuView {
       this.touchStartX = e.changedTouches[0].clientX
     })
     this.highscoreTableContainer.addEventListener('touchend', (e) => {
-      this.rotateHighscoreTables((e.changedTouches[0].clientX - this.touchStartX) / Math.abs(e.changedTouches[0].clientX - this.touchStartX))
+      const distance = e.changedTouches[0].clientX - this.touchStartX
+      this.rotateHighscoreTables(distance / Math.abs(distance))
     })
 
     this.highscoreRotationHelp = document.createElement('span')
@@ -133,9 +138,6 @@ export default class MenuView {
 
   updateHighscoreTables () {
     for (const highscoreTable of this.highscoreTables) {
-      console.log(highscoreTable)
-      console.log(highscoreTable.storageKey)
-
       if (!window.localStorage.getItem(highscoreTable.storageKey)) {
         window.localStorage.setItem(highscoreTable.storageKey, '[]')
       }

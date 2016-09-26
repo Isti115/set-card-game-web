@@ -9,7 +9,7 @@ export default class App {
     this.showMenu = this.showMenu.bind(this)
     this.showGame = this.showGame.bind(this)
 
-    this.zoomToFit(515)
+    this.zoomToFit(915, 515)
 
     this.menuView = new MenuView(this)
     this.gameView = new GameView(this)
@@ -19,12 +19,14 @@ export default class App {
     this.showMenu()
 
     window.wsm = webSocketManager
-    webSocketManager.open()
+    webSocketManager.init()
   }
 
-  zoomToFit (height) {
-    const ratio = this.container.clientHeight / height
-    document.body.style.transform = `scale(${ratio})`
+  zoomToFit (width, height) {
+    const widthRatio = this.container.clientWidth / width
+    const heightRatio = this.container.clientHeight / height
+
+    document.body.style.transform = `scale(${Math.min(widthRatio, heightRatio)})`
   }
 
   clearContainer () {

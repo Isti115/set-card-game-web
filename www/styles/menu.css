@@ -53,6 +53,34 @@
   transform: translateX(20px) translateY(210px);
 }
 
+#websocketStatusIndicator {
+  position: absolute;
+
+  transform: translateX(10px) translateY(480px);
+}
+
+#indicatorDiv {
+  display: inline-block;
+
+  width: 20px;
+  height: 20px;
+
+  box-sizing: border-box;
+
+  vertical-align: bottom;
+  margin-right: 5px;
+
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+
+  border-radius: 10px;
+}
+
+[status='inactive'] #indicatorDiv { background-color: lightgray; }
+[status='open'] #indicatorDiv { background-color: lime; }
+[status='closed'] #indicatorDiv { background-color: red; }
+
 #highscoreTableContainer {
   position: absolute;
   width: 250px;

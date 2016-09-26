@@ -31,14 +31,14 @@ export default class GameView {
     this.startButton.type = 'button'
     this.startButton.value = 'Start'
     this.container.appendChild(this.startButton)
-    this.startButton.addEventListener('click', this.buttonPressed.bind(this))
+    this.startButton.addEventListener('click', this.startPressed.bind(this))
 
     this.state = 'initialized'
   }
 
   start () {
     this.game.start()
-    window.setTimeout(this.timer.start.bind(this.timer), 3000)
+    window.setTimeout(this.timer.start, 3000)
     this.renderer.render()
     this.state = 'started'
     this.startButton.value = 'Restart'
@@ -46,6 +46,7 @@ export default class GameView {
 
   finished (real) {
     this.timer.stop()
+    this.timer.update()
     this.state = 'finished'
     this.startButton.value = 'Again'
 
@@ -76,8 +77,8 @@ export default class GameView {
   }
 
   reset () {
-    this.game.reset()
     this.timer.reset()
+    this.game.reset()
     this.renderer.reset()
   }
 
@@ -95,7 +96,7 @@ export default class GameView {
     }[this.state])()
   }
 
-  buttonPressed () {
+  startPressed () {
     ({
       initialized: () => {
         this.start()

@@ -3,6 +3,9 @@ export default class Timer {
     this.container = container
     this.game = game
 
+    this.start = this.start.bind(this)
+    this.update = this.update.bind(this)
+
     this.time = document.createElement('div')
     this.time.id = 'time'
     this.container.appendChild(this.time)
@@ -15,11 +18,14 @@ export default class Timer {
   }
 
   reset () {
+    clearTimeout(this.timeout)
     this.passedTime = 0
     this.active = false
   }
 
   start () {
+    if (this.active) { return }
+
     this.active = true
     this.update()
   }
@@ -35,11 +41,11 @@ export default class Timer {
 
     this.spm.innerHTML = `${this.getSpm().toFixed(3)} <br /> Set/Minute`
 
+    if (!this.active) { return }
+
     this.passedTime++
 
-    if (this.active) {
-      setTimeout(this.update.bind(this), 1000)
-    }
+    this.timeout = setTimeout(this.update.bind(this), 1000)
   }
 
   stop () {
