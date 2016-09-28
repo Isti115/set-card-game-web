@@ -1,0 +1,35 @@
+.card[color='red'][shading='solid'] .symbol { background: red; }
+.card[color='red'][shading='striped'] .symbol {
+  background: repeating-linear-gradient(90deg, red, red 3px, white 3px, white 6px);
+}
+
+.card[color='purple'][shading='solid'] .symbol { background: purple; }
+.card[color='purple'][shading='striped'] .symbol {
+  background: repeating-linear-gradient(90deg, purple, purple 3px, white 3px, white 6px);
+}
+
+.card[color='green'][shading='solid'] .symbol { background: green; }
+.card[color='green'][shading='striped'] .symbol {
+  background: repeating-linear-gradient(90deg, green, green 3px, white 3px, white 6px);
+}
+
+.card[color='red'] .symbolOutline { background-color: red; }
+.card[color='purple'] .symbolOutline { background-color: purple; }
+.card[color='green'] .symbolOutline { background-color: green; }
+
+.card[shape='oval'] .symbol { -webkit-mask-image: url('./oval.png'); }
+.card[shape='squiggle'] .symbol { -webkit-mask-image: url('./squiggle.png'); }
+.card[shape='diamond'] .symbol { -webkit-mask-image: url('./diamond.png'); }
+
+.card[shape='oval'] .symbolOutline { -webkit-mask-image: url('./oval_outline.png'); }
+.card[shape='squiggle'] .symbolOutline { -webkit-mask-image: url('./squiggle_outline.png'); }
+.card[shape='diamond'] .symbolOutline { -webkit-mask-image: url('./diamond_outline.png'); }
+
+.card[number='one'] .symbolContainer:nth-child(3),
+.card[number='one'] .symbolContainer:nth-child(4) {
+  display: none;
+}
+
+.card[number='two'] .symbolContainer:nth-child(4) {
+  display: none;
+}

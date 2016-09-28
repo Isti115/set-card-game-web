@@ -1,23 +1,3 @@
-import { CardProperty } from './Card'
-
-const imageSourceFromCardShape = cardShape => ({
-  [CardProperty.SHAPE.OVAL]: './images/oval',
-  [CardProperty.SHAPE.SQUIGGLE]: './images/squiggle',
-  [CardProperty.SHAPE.DIAMOND]: './images/diamond'
-}[cardShape])
-
-const symbolCountFromCardNumber = cardNumber => ({
-  [CardProperty.NUMBER.ONE]: 1,
-  [CardProperty.NUMBER.TWO]: 2,
-  [CardProperty.NUMBER.THREE]: 3
-}[cardNumber])
-
-const backgroundFromCardShading = (cardShading, color) => ({
-  [CardProperty.SHADING.SOLID]: `${color}`,
-  [CardProperty.SHADING.STRIPED]: `repeating-linear-gradient(90deg, ${color}, ${color} 3px, white 3px, white 6px)`,
-  [CardProperty.SHADING.OUTLINE]: 'white'
-}[cardShading])
-
 const elementIdFromCard = card => `card_${card.color}_${card.shape}_${card.number}_${card.shading}`
 
 export default class Renderer {
@@ -263,6 +243,10 @@ export default class Renderer {
   renderCard (card) {
     const element = document.createElement('div')
     element.classList.add('card')
+    element.setAttribute('color', card.color)
+    element.setAttribute('shape', card.shape)
+    element.setAttribute('number', card.number)
+    element.setAttribute('shading', card.shading)
 
     // Back
     const back = document.createElement('div')
@@ -274,30 +258,21 @@ export default class Renderer {
     front.classList.add('front')
 
     const spacer = document.createElement('div')
+    spacer.classList.add('spacer')
 
     const symbolContainer = document.createElement('div')
     symbolContainer.classList.add('symbolContainer')
 
-    const symbolImagePath = imageSourceFromCardShape(card.shape)
+    const symbol = document.createElement('div')
+    symbol.classList.add('symbol')
+    symbolContainer.appendChild(symbol)
 
     const symbolOutline = document.createElement('div')
     symbolOutline.classList.add('symbolOutline')
-
-    symbolOutline.style.webkitMaskImage = `url('${symbolImagePath}_outline.png')`
-    symbolOutline.style.backgroundColor = card.color
-
-    const symbol = document.createElement('div')
-    symbol.classList.add('symbol')
-
-    symbol.style.webkitMaskImage = `url('${symbolImagePath}.png')`
-
-    symbol.style.background = backgroundFromCardShading(card.shading, card.color)
-
-    symbolContainer.appendChild(symbol)
     symbolContainer.appendChild(symbolOutline)
 
     front.appendChild(spacer.cloneNode(true))
-    for (let i = 0; i < symbolCountFromCardNumber(card.number); i++) {
+    for (let i = 0; i < 3; i++) {
       front.appendChild(symbolContainer.cloneNode(true))
     }
     front.appendChild(spacer.cloneNode(true))
