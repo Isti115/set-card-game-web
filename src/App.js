@@ -16,10 +16,10 @@ export default class App {
 
     webSocketManager.scoreReceived.push(this.menuView.updateHighscoreTables)
 
-    this.showMenu()
-
     window.wsm = webSocketManager
     webSocketManager.init()
+
+    this.showMenu()
   }
 
   zoomToFit (width, height) {
@@ -36,6 +36,7 @@ export default class App {
   }
 
   showMenu () {
+    webSocketManager.send(JSON.stringify({type: 'scoreRequest'}))
     this.clearContainer()
     this.menuView.updateHighscoreTables()
     this.container.appendChild(this.menuView.container)

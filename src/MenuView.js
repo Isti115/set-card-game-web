@@ -26,7 +26,7 @@ export default class MenuView {
 
     const version = document.createElement('span')
     version.id = 'version'
-    version.appendChild(document.createTextNode('v0.2.9'))
+    version.appendChild(document.createTextNode('v0.2.10'))
     about.appendChild(version)
 
     this.container.appendChild(about)
@@ -63,12 +63,12 @@ export default class MenuView {
     this.globalHighscoreTable.storageKey = 'globalScores'
     this.highscoreTables.push(this.globalHighscoreTable)
 
-    this.dailyHighscoreTable = this.makeHighscoreTable('---')
+    this.dailyHighscoreTable = this.makeHighscoreTable('Daily Highscores')
     this.dailyHighscoreTable.id = 'dailyHighscoreTable'
     this.dailyHighscoreTable.storageKey = 'dailyScores'
     this.highscoreTables.push(this.dailyHighscoreTable)
 
-    this.personalHighScoreTable = this.makeHighscoreTable('---')
+    this.personalHighScoreTable = this.makeHighscoreTable('Personal Highscores')
     this.personalHighScoreTable.id = 'parsonalHighscoreTable'
     this.personalHighScoreTable.storageKey = 'personalScores'
     this.highscoreTables.push(this.personalHighScoreTable)
@@ -86,7 +86,9 @@ export default class MenuView {
     })
     this.highscoreTableContainer.addEventListener('touchend', (e) => {
       const distance = e.changedTouches[0].clientX - this.touchStartX
-      this.rotateHighscoreTables(distance / Math.abs(distance))
+      if (Math.abs(distance) > 0) {
+        this.rotateHighscoreTables(distance / Math.abs(distance))
+      }
     })
 
     this.highscoreRotationHelp = document.createElement('span')

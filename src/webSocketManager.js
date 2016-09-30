@@ -39,12 +39,22 @@ class WebSocketManager {
     this.statusSpan.innerText = 'Open'
   }
 
+  send (message) {
+    if (this.ws.readyState === 1) {
+      this.ws.send(message)
+    } else {
+      setTimeout(() => this.send(message), 1000)
+    }
+  }
+
   message (msg) {
     console.log(msg)
     const message = JSON.parse(msg.data)
 
-    if (message.type === 'globalScores') {
-      window.localStorage.setItem('globalScores', JSON.stringify(message.data))
+    if (message.type === 'scoresByType') {
+      for (const scoreByType of message.data) {
+        window.localStorage.setItem(scoreByType.type, JSON.stringify(scoreByType.data))
+      }
     }
 
     for (const callback of this.scoreReceived) {

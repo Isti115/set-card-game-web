@@ -78,11 +78,14 @@ export default class Renderer {
     this.queue = []
     clearTimeout(this.queueTimeout)
 
+    this.selectedCards = []
+
     this.elements['stashCounter'].innerHTML = ''
 
     for (const card of this.game.deck.cards) {
       this.elements[elementIdFromCard(card)].style.transform = ''
       this.elements[elementIdFromCard(card)].style.zIndex = -1
+      this.elements[elementIdFromCard(card)].classList.remove('selected')
     }
   }
 
