@@ -26,7 +26,7 @@ export default class MenuView {
 
     const version = document.createElement('span')
     version.id = 'version'
-    version.appendChild(document.createTextNode('v0.2.10'))
+    version.appendChild(document.createTextNode('v0.2.11'))
     about.appendChild(version)
 
     this.container.appendChild(about)

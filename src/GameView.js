@@ -70,7 +70,13 @@ export default class GameView {
             highscores.sort((a, b) => b.score - a.score).slice(0, 10)
           ))
 
-          webSocketManager.sendScore(name, score)
+          if (webSocketManager.ready) {
+            webSocketManager.sendScore(name, score)
+          } else {
+            const queuedScores = JSON.parse(window.localStorage.getItem('queuedScores'))
+            queuedScores.push({name, score, date: new Date()})
+            window.localStorage.setItem('queuedScores', JSON.stringify(queuedScores))
+          }
         }
       }
     }, 300)

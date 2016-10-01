@@ -39,8 +39,12 @@ class WebSocketManager {
     this.statusSpan.innerText = 'Open'
   }
 
+  get ready () {
+    return this.ws.readyState === 1
+  }
+
   send (message) {
-    if (this.ws.readyState === 1) {
+    if (this.ready) {
       this.ws.send(message)
     } else {
       setTimeout(() => this.send(message), 1000)
@@ -55,6 +59,8 @@ class WebSocketManager {
       for (const scoreByType of message.data) {
         window.localStorage.setItem(scoreByType.type, JSON.stringify(scoreByType.data))
       }
+    } else if (message.type = 'scoresAcknowledged') {
+      window.localStorage.setItem('queuedScores', '[]')
     }
 
     for (const callback of this.scoreReceived) {
@@ -68,9 +74,16 @@ class WebSocketManager {
   }
 
   sendScore (name, score) {
-    this.ws.send(JSON.stringify({
+    this.send(JSON.stringify({
       type: 'score',
       data: {name, score}
+    }))
+  }
+
+  sendQueuedScores (queuedScores) {
+    this.send(JSON.stringify({
+      type: 'queuedScores',
+      data: queuedScores
     }))
   }
 }

@@ -36,6 +36,13 @@ export default class App {
   }
 
   showMenu () {
+    if (!window.localStorage.getItem('queuedScores')) {
+      window.localStorage.setItem('queuedScores', '[]')
+    }
+
+    const queuedScores = JSON.parse(window.localStorage.getItem('queuedScores'))
+    webSocketManager.sendQueuedScores(queuedScores)
+
     webSocketManager.send(JSON.stringify({type: 'scoreRequest'}))
     this.clearContainer()
     this.menuView.updateHighscoreTables()
