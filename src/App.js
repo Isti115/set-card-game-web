@@ -9,7 +9,9 @@ export default class App {
     this.showMenu = this.showMenu.bind(this)
     this.showGame = this.showGame.bind(this)
 
-    this.zoomToFit(915, 515)
+    const width = 915
+    const height = 515
+    this.zoomToFit(width, height)
 
     this.menuView = new MenuView(this)
     this.gameView = new GameView(this)
@@ -18,6 +20,20 @@ export default class App {
 
     window.wsm = webSocketManager
     webSocketManager.init()
+
+    window.addEventListener('resize', () => this.zoomToFit(width, height), false)
+
+    document.addEventListener('deviceready', () => {
+      document.addEventListener('backbutton', () => {
+        if (document.getElementById('gameView')) {
+          this.gameView.menuPressed()
+        } else {
+          if (window.confirm('Current game progress will be lost on exit. Would you surely like to quit?')) {
+            navigator.app.exitApp()
+          }
+        }
+      }, true)
+    }, false)
 
     this.showMenu()
   }
