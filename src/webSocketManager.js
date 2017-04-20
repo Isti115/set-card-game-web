@@ -52,14 +52,14 @@ class WebSocketManager {
   }
 
   message (msg) {
-    console.log(msg)
+    // console.log(msg)
     const message = JSON.parse(msg.data)
 
     if (message.type === 'scoresByType') {
       for (const scoreByType of message.data) {
         window.localStorage.setItem(scoreByType.type, JSON.stringify(scoreByType.data))
       }
-    } else if (message.type = 'scoresAcknowledged') {
+    } else if (message.type === 'scoresAcknowledged') {
       window.localStorage.setItem('queuedScores', '[]')
     }
 

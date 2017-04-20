@@ -320,7 +320,7 @@ export default class Renderer {
   }
 
   cardClicked (card) {
-    console.log(card)
+    // console.log(`Clicked: ${card}`)
 
     if (this.game.board.cards.includes(card)) {
       const currentElement = this.elements[elementIdFromCard(card)]
@@ -328,7 +328,7 @@ export default class Renderer {
       if (this.selectedCards.includes(card)) {
         currentElement.classList.remove('selected')
 
-        this.selectedCards.splice(this.selectedCards.indexOf(card))
+        this.selectedCards.splice(this.selectedCards.indexOf(card), 1)
       } else {
         currentElement.classList.add('selected')
 

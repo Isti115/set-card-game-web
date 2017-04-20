@@ -1,0 +1,27 @@
+    <html>
+    <head>
+      <style>
+        .translated {
+          transform: translateX(0px);
+        }
+
+        div {
+          width: 100px;
+          height: 200px;
+
+          border: solid black 1px;
+
+          transition: transform 2000ms;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="translated" id="box"></div>
+      <script>
+        const box = document.getElementById('box')
+
+        setTimeout(() => { box.style.transform = 'rotate(90deg)' }, 0)
+        setTimeout(() => { box.style.transform = 'rotate(180deg)' }, 1000)
+      </script>
+    </body>
+    </html>

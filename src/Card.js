@@ -49,4 +49,8 @@ export default class Card {
 
     return cards
   }
+
+  toString () {
+    return `${this.color}-${this.shape}-${this.number}-${this.shading}`
+  }
 }

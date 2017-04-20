@@ -89,7 +89,7 @@
 
   transform-style: preserve-3d;
 
-  transform: translateX(375px) translateY(15px);
+  transform: translateX(375px) translateY(15px) rotateY(0deg);
   transition: transform 1s;
 }
 
