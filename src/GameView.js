@@ -1,5 +1,6 @@
 import webSocketManager from './webSocketManager'
 import Game from './Game'
+import NameInput from './NameInput'
 import Timer from './Timer'
 import Renderer from './Renderer'
 
@@ -15,6 +16,12 @@ export default class GameView {
     this.renderer.init()
 
     this.timer = new Timer(this.renderer.elements['timer'], this.game)
+
+    this.nameInput = new NameInput()
+    this.nameInput.container.id = 'nameInput'
+    this.nameInput.addEventListener('open', () => this.container.classList.add('blurred'))
+    this.nameInput.addEventListener('close', () => this.container.classList.remove('blurred'))
+    this.container.appendChild(this.nameInput.container)
 
     this.renderer.elements['deck'].addEventListener('touchstart', this.deal.bind(this), true)
     window.addEventListener('keydown', this.keyDown.bind(this), false)
@@ -64,32 +71,31 @@ export default class GameView {
 
     setTimeout(() => {
       if (real) {
-        if (!window.localStorage.getItem('lastUsedName')) {
-          window.localStorage.setItem('lastUsedName', 'Guest')
-        }
-        const lastUsedName = window.localStorage.getItem('lastUsedName')
+        const score = this.timer.getSpm()
 
-        const name = window.prompt('Please enter your name:', lastUsedName)
+        const callback = (name) => {
+          if (name) {
+            const highscores = JSON.parse(window.localStorage.getItem('localScores'))
 
-        if (name) {
-          window.localStorage.setItem('lastUsedName', name)
-          const highscores = JSON.parse(window.localStorage.getItem('localScores'))
+            highscores.push({name, score})
+            window.localStorage.setItem('localScores', JSON.stringify(
+              highscores.sort((a, b) => b.score - a.score).slice(0, 10)
+            ))
 
-          const score = this.timer.getSpm()
-
-          highscores.push({name, score})
-          window.localStorage.setItem('localScores', JSON.stringify(
-            highscores.sort((a, b) => b.score - a.score).slice(0, 10)
-          ))
-
-          if (webSocketManager.ready) {
-            webSocketManager.sendScore(name, score)
-          } else {
-            const queuedScores = JSON.parse(window.localStorage.getItem('queuedScores'))
-            queuedScores.push({name, score, date: new Date()})
-            window.localStorage.setItem('queuedScores', JSON.stringify(queuedScores))
+            if (webSocketManager.ready) {
+              webSocketManager.sendScore(name, score)
+            } else {
+              const queuedScores = JSON.parse(window.localStorage.getItem('queuedScores'))
+              queuedScores.push({name, score, date: new Date()})
+              window.localStorage.setItem('queuedScores', JSON.stringify(queuedScores))
+            }
           }
+
+          this.nameInput.removeEventListener('submit', callback)
         }
+
+        this.nameInput.addEventListener('submit', callback)
+        this.nameInput.open()
       }
     }, 300)
   }
