@@ -19,17 +19,15 @@ export default class GameView {
     this.renderer.elements['deck'].addEventListener('touchstart', this.deal.bind(this), true)
     window.addEventListener('keydown', this.keyDown.bind(this), false)
 
-    this.menuButton = document.createElement('input')
-    this.menuButton.id = 'menuButton'
-    this.menuButton.type = 'button'
-    this.menuButton.value = 'Menu / Pause'
-    this.container.appendChild(this.menuButton)
-    this.menuButton.addEventListener('click', this.menuPressed.bind(this))
+    this.pauseButton = document.createElement('input')
+    this.pauseButton.id = 'pauseButton'
+    this.pauseButton.type = 'button'
+    this.container.appendChild(this.pauseButton)
+    this.pauseButton.addEventListener('click', this.menuPressed.bind(this))
 
     this.startButton = document.createElement('input')
     this.startButton.id = 'startButton'
     this.startButton.type = 'button'
-    this.startButton.value = 'Start'
     this.container.appendChild(this.startButton)
     this.startButton.addEventListener('click', this.startPressed.bind(this))
 
@@ -40,15 +38,29 @@ export default class GameView {
     this.game.start()
     window.setTimeout(this.timer.start, 3000)
     this.renderer.render()
+
+    ;({
+      initialized: () => {
+        this.startButton.dataset.state = 'animating'
+        setTimeout(() => {
+          this.startButton.dataset.state = 'animated'
+        }, 2000)
+      },
+
+      finished: () => {
+        this.startButton.dataset.state = 'animated'
+        this.timer.update()
+      }
+    }[this.state])()
+
     this.state = 'started'
-    this.startButton.value = 'Restart'
   }
 
   finished (real) {
     this.timer.stop()
     this.timer.update()
     this.state = 'finished'
-    this.startButton.value = 'Again'
+    this.startButton.dataset.state = 'finished'
 
     setTimeout(() => {
       if (real) {
@@ -89,7 +101,7 @@ export default class GameView {
   }
 
   menuPressed () {
-    ({
+    ;({
       initialized: () => {
         this.app.showMenu()
       },

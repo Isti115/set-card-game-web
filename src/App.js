@@ -65,6 +65,16 @@ export default class App {
     this.container.appendChild(this.menuView.container)
 
     this.gameView.timer.stop()
+
+    if (this.gameView.state === 'started') {
+      this.menuView.newGameButton.value = 'Continue Game'
+    } else if (this.gameView.state === 'finished') {
+      this.menuView.newGameButton.value = 'New Game'
+    }
+
+    if (this.gameView.startButton.dataset.state === 'animating') {
+      this.gameView.startButton.dataset.state = 'animated'
+    }
   }
 
   showGame () {

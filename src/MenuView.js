@@ -26,7 +26,7 @@ export default class MenuView {
 
     const version = document.createElement('span')
     version.id = 'version'
-    version.appendChild(document.createTextNode('v0.2.13'))
+    version.appendChild(document.createTextNode('v0.2.14'))
     about.appendChild(version)
 
     this.container.appendChild(about)
@@ -38,7 +38,7 @@ export default class MenuView {
     this.newGameButton = document.createElement('input')
     this.newGameButton.id = 'newGameButton'
     this.newGameButton.type = 'button'
-    this.newGameButton.value = 'New Game / Continue'
+    this.newGameButton.value = 'New Game'
     this.newGameButton.addEventListener('click', this.app.showGame)
     this.container.appendChild(this.newGameButton)
 

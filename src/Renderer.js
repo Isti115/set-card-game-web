@@ -1,9 +1,9 @@
 import { CardProperty } from './Card'
 
 const imageSourceFromCardShape = cardShape => ({
-  [CardProperty.SHAPE.OVAL]: './images/oval',
-  [CardProperty.SHAPE.SQUIGGLE]: './images/squiggle',
-  [CardProperty.SHAPE.DIAMOND]: './images/diamond'
+  [CardProperty.SHAPE.OVAL]: './images/shapes/oval',
+  [CardProperty.SHAPE.SQUIGGLE]: './images/shapes/squiggle',
+  [CardProperty.SHAPE.DIAMOND]: './images/shapes/diamond'
 }[cardShape])
 
 const symbolCountFromCardNumber = cardNumber => ({
@@ -57,7 +57,7 @@ export default class Renderer {
 
     this.elements['deckCounter'] = document.createElement('div')
     this.elements['deckCounter'].id = 'deckCounter'
-    this.elements['deckCounter'].innerHTML = `Remaining: ${this.game.deck.cards.length > 0 ? this.game.deck.cards.length : 'no'} cards`
+    this.updateDeckCounterText()
 
     this.elements['timer'] = document.createElement('div')
     this.elements['timer'].id = 'timer'
@@ -98,6 +98,12 @@ export default class Renderer {
     }
   }
 
+  updateDeckCounterText () {
+    this.elements['deckCounter'].innerHTML = this.game.deck.cards.length > 0
+      ? `Remaining: ${this.game.deck.cards.length}`
+      : `Deck is empty`
+  }
+
   render () {
     // Render card stashing
     if (this.game.changedCards.stashed.length > 0) {
@@ -125,7 +131,7 @@ export default class Renderer {
       this.game.changedCards.stashed = []
 
       this.elements['stashCounter'].innerHTML =
-        `Collected: ${this.game.stash.cards.length / 3} set${this.game.stash.cards.length > 3 ? 's' : ''}`
+        `Found: ${this.game.stash.cards.length / 3} set${this.game.stash.cards.length > 3 ? 's' : ''}`
     }
 
     // Render card dealing
@@ -168,7 +174,7 @@ export default class Renderer {
       this.game.changedCards.dealt = []
       this.queue.push(...dealUp, { payload: [], delay: 500 }, ...dealDown)
 
-      this.elements['deckCounter'].innerHTML = `Remaining: ${this.game.deck.cards.length > 0 ? this.game.deck.cards.length : 'no'} cards`
+      this.updateDeckCounterText()
     }
 
     // Render card shaking

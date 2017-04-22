@@ -23,23 +23,64 @@ body.nightMode {
   -webkit-filter: invert(100%);
 }
 
-#menuButton, #startButton {
+#pauseButton, #startButton {
   position: absolute;
 
-  width: 120px;
-  height: 40px;
+  width: 55px;
+  height: 55px;
 
-  font-size: 14px;
+  background-size: cover;
+
+  box-shadow: 0 0 2px 1px black;
 
   z-index: -1;
 }
 
-#menuButton {
+#pauseButton {
+  background-image: url("../images/buttons/pause.png");
+
   transform: translateX(10px) translateY(10px);
 }
 
+@keyframes moveStart {
+  0% {
+    background-position-x: 0px;
+    transform: translateX(500px) translateY(230px) scale(8);
+  }
+
+  30%, 50% {
+    background-position-x: 0px;
+    transform: translateX(500px) translateY(10px);
+  }
+
+  100% {
+    background-position-x: 50px;
+    transform: translateX(70px) translateY(10px);
+  }
+}
+
 #startButton {
-  transform: translateX(150px) translateY(10px);
+  background-image: url("../images/buttons/play_restart.png");
+  transform: translateX(500px) translateY(230px) scale(8);
+
+  transition: all 1s;
+}
+
+#startButton[data-state="animating"] {
+  animation-name: moveStart;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+#startButton[data-state="animated"] {
+  background-position-x: 50px;
+  transform: translateX(70px) translateY(10px);
+}
+
+#startButton[data-state="finished"] {
+  background-position-x: 0px;
+  transform: translateX(70px) translateY(10px);
 }
 
 #gameContainer {
@@ -59,13 +100,13 @@ body.nightMode {
   border-color: black;
   border-width: 3px;
 
-  transform: translateX(10px) translateY(30px);
+  transform: translateX(10px) translateY(35px);
 }
 
 #deckCounter {
   position: absolute;
 
-  transform: translateX(10px) translateY(10px);
+  transform: translateX(10px) translateY(15px);
 }
 
 #timer {
@@ -75,7 +116,7 @@ body.nightMode {
 
   text-align: center;
 
-  transform: translateX(150px) translateY(10px);
+  transform: translateX(150px) translateY(-25px);
 }
 
 #time {
