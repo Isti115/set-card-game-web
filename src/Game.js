@@ -13,6 +13,8 @@ export default class Game {
 
     this.minimalCardAmount = 12
     this.changedCards = {dealt: [], stashed: [], moved: [], shake: []}
+
+    this.foundSet = []
   }
 
   reset () {
@@ -51,12 +53,12 @@ export default class Game {
   makeBoardValid () {
     if (
       this.board.cardCount < this.minimalCardAmount ||
-      !Set.hasSet(this.board.conciseCardArray)
+      !Set.hasSet(this.board.conciseCardArray, this.foundSet)
     ) {
       if (this.deck.cards.length > 0) {
         this.deal(3)
         this.makeBoardValid()
-      } else if (!Set.hasSet(this.board.conciseCardArray)) {
+      } else if (!Set.hasSet(this.board.conciseCardArray, this.foundSet)) {
         this.finished(true)
       }
     }

@@ -31,6 +31,14 @@ export default class GameView {
       }
     }, true)
 
+    this.renderer.elements['timer'].addEventListener('touchstart', () => {
+      if (this.state === 'started' &&
+      window.confirm('Are you sure you would like to ask for a hint? This will invalidate your score.')) {
+        this.valid = false
+        this.hint()
+      }
+    }, true)
+
     this.pauseButton = document.createElement('input')
     this.pauseButton.id = 'pauseButton'
     this.pauseButton.type = 'button'
@@ -158,6 +166,8 @@ export default class GameView {
   }
 
   hint () {
-    console.log('hint here')
+    const foundCards = this.game.foundSet.map(i => this.game.board.cards[i])
+    this.game.changedCards.shake.push(...foundCards)
+    this.renderer.render()
   }
 }
