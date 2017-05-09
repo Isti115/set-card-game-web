@@ -9,6 +9,8 @@ export default class App {
     this.showMenu = this.showMenu.bind(this)
     this.showGame = this.showGame.bind(this)
 
+    const initialHeight = this.container.clientHeight
+
     const width = 915
     const height = 515
     this.zoomToFit(width, height)
@@ -21,7 +23,13 @@ export default class App {
     window.wsm = webSocketManager
     webSocketManager.init()
 
-    window.addEventListener('resize', () => this.zoomToFit(width, height), false)
+    window.addEventListener('resize', () => {
+      const difference = Math.abs(initialHeight - this.container.clientHeight)
+
+      if (difference / initialHeight < 0.1) {
+        this.zoomToFit(width, height)
+      }
+    }, false)
 
     document.addEventListener('deviceready', () => {
       document.addEventListener('backbutton', () => {

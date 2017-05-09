@@ -148,7 +148,14 @@ export default class NameInput {
   }
 
   populateRight () {
-    const buttons = this.right.getElementsByTagName('input')
+    // HTMLCollection is live as it turns out, so
+    // while (buttons.length > 0) {
+    //   this.right.removeChild(buttons[0])
+    // }
+    // could've worked as well, but it seems like a bad choice to me
+    // from a functional perspective.
+
+    const buttons = Array.from(this.right.getElementsByTagName('input'))
 
     for (const button of buttons) {
       this.right.removeChild(button)

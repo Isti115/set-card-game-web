@@ -45,7 +45,7 @@ body.nightMode {
 @keyframes moveStart {
   0% {
     background-position-x: 0px;
-    transform: translateX(500px) translateY(230px) scale(8);
+    transform: translateX(500px) translateY(230px) scale(6);
   }
 
   30%, 50% {
@@ -61,7 +61,7 @@ body.nightMode {
 
 #startButton {
   background-image: url("../images/buttons/play_restart.png");
-  transform: translateX(500px) translateY(230px) scale(8);
+  transform: translateX(500px) translateY(230px) scale(6);
 
   transition: all 1s;
 }
@@ -110,7 +110,7 @@ body.nightMode {
 
   width: 115px;
 
-  transform: translateX(10px) translateY(15px);
+  transform: translateX(10px) translateY(17px);
 }
 
 #timer {
@@ -141,7 +141,8 @@ body.nightMode {
 }
 
 #gameView.blurred > :not(#nameInput) {
-  filter: blur(1.5px);
+  /*filter: blur(1.5px);*/
+  opacity: 0.5;
 }
 
 #nameInput {

@@ -23,8 +23,13 @@ export default class GameView {
     this.nameInput.addEventListener('close', () => this.container.classList.remove('blurred'))
     this.container.appendChild(this.nameInput.container)
 
-    this.renderer.elements['deck'].addEventListener('touchstart', this.deal.bind(this), true)
-    window.addEventListener('keydown', this.keyDown.bind(this), false)
+    this.renderer.elements['deck'].addEventListener('touchstart', () => {
+      if (this.state === 'started' &&
+      window.confirm('Are you sure you would like to deal more cards? This will invalidate your score.')) {
+        this.valid = false
+        this.deal()
+      }
+    }, true)
 
     this.pauseButton = document.createElement('input')
     this.pauseButton.id = 'pauseButton'
@@ -42,6 +47,8 @@ export default class GameView {
   }
 
   start () {
+    this.valid = true
+
     this.game.start()
     window.setTimeout(this.timer.start, 3000)
     this.renderer.render()
@@ -63,6 +70,10 @@ export default class GameView {
     this.state = 'started'
   }
 
+  /**
+   * Processes the score at the end of a game
+   * @param {boolean} real determines whether the game has been really finished or interrupted
+   */
   finished (real) {
     this.timer.stop()
     this.timer.update()
@@ -70,7 +81,7 @@ export default class GameView {
     this.startButton.dataset.state = 'finished'
 
     setTimeout(() => {
-      if (real) {
+      if (real && this.valid) {
         const score = this.timer.getSpm()
 
         const callback = (name) => {
@@ -137,16 +148,6 @@ export default class GameView {
         this.start()
       }
     }[this.state])()
-  }
-
-  keyDown (e) {
-    if (e.code === 'KeyD') {
-      this.deal()
-    }
-
-    if (e.code === 'KeyH') {
-      this.hint()
-    }
   }
 
   deal () {
